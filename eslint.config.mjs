@@ -6,7 +6,9 @@ import globals from "globals";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    files: ["**/*.{js,mjs,cjs,jsx}"], 
+    files: [
+      "**/*.{js,mjs,cjs,jsx}"
+    ], 
     extends: [
       "eslint:recommended",
       "plugin:react/recommended",
