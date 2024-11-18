@@ -5,7 +5,7 @@
   background: url("../public/bg.jpg");
   background-size: cover;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 body, html, .App, #root{
