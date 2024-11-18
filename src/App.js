@@ -7,7 +7,8 @@ import { Panel } from './components/Panel/Panel';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { Title } from './components/Text/Text';
 function App() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
     <div className="App" style={{gap: "16px"}} >
       <Sidebar isOpen/>
@@ -17,8 +18,8 @@ function App() {
           <Title>Panel Test</Title>
           <div>asdf</div>
         </Panel>
-        <Button variant="contained" onClick={() => setIsOpen(!isOpen)}>asdf</Button>
-        <Modal isOpen={isOpen} setIsOpen={setIsOpen}>asdf</Modal>
+        <Button variant="contained" onClick={() => setIsModalOpen(!isOpen)}>asdf</Button>
+        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>asdf</Modal>
 
       </div>
     </div>
