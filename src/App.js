@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar/Navbar';
 import { Panel } from './components/Panel/Panel';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { Title } from './components/Text/Text';
+import { Textbox } from './components/Textbox/Textbox';
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,6 +14,7 @@ function App() {
     <div className="App" style={{gap: "16px"}} >
       <Sidebar isOpen={isSidebarOpen}/>
       <div className="flex-col" style={{gap: "8px", flexGrow: 1}}>
+        <Textbox></Textbox>
         <Navbar/>
         <Panel>
           <Title>Panel Test</Title>

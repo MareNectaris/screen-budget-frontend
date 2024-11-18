@@ -1,3 +1,7 @@
+# Drafts, Notes
+원형 프로그레스바는 MUI의 CircularProgressWithLabel, 파이차트는 MUI X의 PieChart 쓰기 
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
