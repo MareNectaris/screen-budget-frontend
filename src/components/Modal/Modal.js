@@ -1,9 +1,14 @@
 import "./Modal.css"
 
-export const Modal = ({children}) => {
+export const Modal = ({children, isOpen, setIsOpen}) => {
   return (
     <div>
-      {children}
+    {isOpen && 
+    <div className="modal-overlay">
+      <div className="modal-dialog">
+        {children}
+      </div>
+    </div>}
     </div>
   )
 }
