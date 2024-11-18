@@ -11,14 +11,14 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
     <div className="App" style={{gap: "16px"}} >
-      <Sidebar isOpen/>
-      <div className="flex-col">
+      <Sidebar isOpen={isSidebarOpen}/>
+      <div className="flex-col" style={{gap: "8px", flexGrow: 1}}>
         <Navbar/>
         <Panel>
           <Title>Panel Test</Title>
           <div>asdf</div>
         </Panel>
-        <Button variant="contained" onClick={() => setIsModalOpen(!isOpen)}>asdf</Button>
+        <Button variant="contained" onClick={() => setIsModalOpen(!isModalOpen)}>asdf</Button>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>asdf</Modal>
 
       </div>

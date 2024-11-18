@@ -5,3 +5,18 @@
   font-weight: normal;
   line-height: normal;
 }
+
+.navbar-text{
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.nav-bold{
+  font-weight: 700;
+}
+
+.nav-medium{
+  font-weight: 400;
+}

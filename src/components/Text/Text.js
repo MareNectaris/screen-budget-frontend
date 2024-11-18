@@ -7,3 +7,19 @@ export const Title = ({children}) => {
     </div>
   )
 }
+
+export const NavbarCurrent = ({children}) => {
+  return (
+    <div className="navbar-text nav-bold">
+      {children}
+    </div>
+  )
+}
+
+export const NavbarDirectory = ({children}) => {
+  return (
+    <div className="navbar-text nav-medium">
+      {children}
+    </div>
+  )
+}
