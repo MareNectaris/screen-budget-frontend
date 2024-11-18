@@ -1,0 +1,15 @@
+.sidebar-container{
+  display: flex;
+  
+}
+
+.sidebar{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 300px;
+  border-radius: 0px 16px 16px 0px;
+  border: 1px solid #FFF;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(30px);
+}
