@@ -1,13 +1,11 @@
 import "./Sidebar.css"
 
-export const Sidebar = ({children, isOpen}) => {
+export const Sidebar = ({children}) => {
   return (
     <div className="sidebar-container">
-    {isOpen&&
-    <div className="sidebar">
-      {children}
-    </div>
-    }
+      <div className="sidebar">
+        {children}
+      </div>
     </div>
   )
 }

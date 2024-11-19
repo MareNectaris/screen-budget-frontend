@@ -12,7 +12,7 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
     <div className="App" style={{gap: "16px"}} >
-      <Sidebar isOpen={isSidebarOpen}/>
+      {isSidebarOpen && <Sidebar/>}
       <div className="flex-col" style={{gap: "8px", flexGrow: 1}}>
         <Textbox></Textbox>
         <Navbar/>
