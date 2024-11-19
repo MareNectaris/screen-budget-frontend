@@ -14,7 +14,7 @@ function App() {
       {isSidebarOpen && <Sidebar/>}
       <div className="flex-col" style={{gap: "12px", flexGrow: 1, padding: '12px'}}>
         
-        <Navbar/>
+        <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
         <Panel>
           <Title>Panel Test</Title>
           <div>asdf</div>
