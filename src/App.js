@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import { Button } from './components/Button/Button';
+import { CategoryChip } from './components/CategoryChip/CategoryChip';
 import { Modal } from './components/Modal/Modal';
 import { Navbar } from './components/Navbar/Navbar';
 import { Panel } from './components/Panel/Panel';
@@ -20,6 +21,7 @@ function App() {
           <div>asdf</div>
         </Panel>
         <Button variant="contained" onClick={() => setIsModalOpen(!isModalOpen)}>asdf</Button>
+        <CategoryChip color={"#09C06E"}>카테고리</CategoryChip>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>asdf</Modal>
 
       </div>
