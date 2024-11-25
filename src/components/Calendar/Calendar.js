@@ -56,7 +56,11 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
     <div className="calendar">
       <div className="calendar-header">
         <div>
-          {selectedMonth.getFullYear()}년 {selectedMonth.getMonth() + 1}월
+          <div className="month-title">{selectedMonth.getFullYear()}년 {selectedMonth.getMonth() + 1}월</div>
+          
+        </div>
+        <div className="flex-1">
+
         </div>
         <button className="calendar-switch-button" onClick={() => handleMonthChange(-1)}>
           <ArrowBackIosNew/>
@@ -81,12 +85,16 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
               key={idx}
               className={`day
                 ${date.getMonth()===selectedMonth.getMonth()?"":"other-month"}
-                ${dateHasEvent(date)?"has-event":""}
-                ${date.toDateString() === selectedDate.toDateString()? "date-selected":""}
+                
                 `}
               onClick={() => handleDateClick(date)}
             >
-              {date.getDate()}
+              <div className="flex-row">
+                <div className={`${date.toDateString() === selectedDate.toDateString()? "date-selected":""}`}>
+                  {date.getDate()}
+                </div>
+                <div className={`${dateHasEvent(date)?"has-event":""}`}/>
+              </div>
             </div>
           )
         })}
