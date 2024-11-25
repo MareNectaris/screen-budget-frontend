@@ -35,7 +35,7 @@ function App() {
         <CategoryChip color={"#09C06E"}>카테고리</CategoryChip>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>asdf</Modal>
         <FAB onClick={()=>alert("hi")}/>
-        <Panel>
+        <Panel style={{width: "50%", width: '50%', height: '616px'}}>
           <Calendar schedules={schedules} onDateSelected={handleDateSelected}/>
         </Panel>
       </div>
