@@ -6,9 +6,24 @@
 
 .calendar-header{
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  
+  padding-bottom: 8px;
+}
+
+.flex-1{
+  flex: 1
+}
+
+.calendar-header > button {
+  padding-left: 16px;
+}
+
+.month-title{
+  color: #000;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .days-of-week, .days{
@@ -18,6 +33,7 @@
 
 .days{
   flex-grow: 1;
+  cursor: pointer;
 }
 
 .calendar-switch-button{
@@ -28,4 +44,20 @@
 	font: inherit;
 	cursor: pointer;
 	outline: inherit;
+}
+
+.other-month{
+  color: rgba(0, 0, 0, 0.40);
+}
+
+.has-event{
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: #7E03D5;
+}
+
+.date-selected{
+  background: #7E03D5;
+  color: #FFF;
 }
