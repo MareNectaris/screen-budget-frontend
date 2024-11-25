@@ -29,3 +29,23 @@ body, html, .App, #root{
   justify-content: center;
   align-items: center;
 }
+
+.flex-1{
+  flex: 1
+}
+
+.space-between{
+  justify-content: space-between;
+}
+
+.gap-6px{
+  gap: 6px;
+}
+
+.align-end{
+  align-items: flex-end;
+}
+
+.align-center{
+  align-items: center;
+}
