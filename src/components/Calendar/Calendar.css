@@ -1,0 +1,21 @@
+.calendar{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.days-of-week, .days{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.days{
+  flex-grow: 1;
+}
