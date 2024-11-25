@@ -1,3 +1,4 @@
+import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 import { useState } from 'react';
 import './Calendar.css';
 
@@ -57,8 +58,12 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
         <div>
           {selectedMonth.getFullYear()}년 {selectedMonth.getMonth() + 1}월
         </div>
-        <button onClick={() => handleMonthChange(-1)}>BACK</button>
-        <button onClick={() => handleMonthChange(1)}>NEXT</button>
+        <button className="calendar-switch-button" onClick={() => handleMonthChange(-1)}>
+          <ArrowBackIosNew/>
+        </button>
+        <button className="calendar-switch-button" onClick={() => handleMonthChange(1)}>
+          <ArrowForwardIos/>
+        </button>
       </div>
       <div className="days-of-week">
         {daysOfWeek.map((d) => {
