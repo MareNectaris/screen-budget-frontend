@@ -1,5 +1,4 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { NavbarCurrent, NavbarDirectory } from '../Text/Text';
 import './Navbar.css';
 export const Navbar = ({ children, isSidebarOpen, setIsSidebarOpen }) => {
   return (
@@ -10,8 +9,9 @@ export const Navbar = ({ children, isSidebarOpen, setIsSidebarOpen }) => {
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         />
       )}
-      <NavbarDirectory>개인 가계부 /</NavbarDirectory>
-      <NavbarCurrent>대시보드</NavbarCurrent>
+      <div className="flex-row" style={{ gap: '8px' }}>
+        {children}
+      </div>
     </div>
   );
 };
