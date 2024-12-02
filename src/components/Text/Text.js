@@ -15,3 +15,7 @@ export const NavbarDirectory = ({ children }) => {
 export const IntroTitle = ({ children }) => {
   return <div className="intro-title">{children}</div>;
 };
+
+export const TextboxLabel = ({ children }) => {
+  return <div className="textbox-label">{children}</div>;
+};
