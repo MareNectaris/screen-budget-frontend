@@ -3,9 +3,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
-import { Panel } from '../../../components/Panel/Panel';
-import { Title } from '../../../components/Text/Text';
 import { authState, isReInitState, isSignedInState } from '../../../store/Auth';
+import { Loading } from '../../Loading/Loading';
 export const ReInit = () => {
   const navigate = useNavigate();
   const [isReInit, setIsReInit] = useRecoilState(isReInitState);
@@ -40,13 +39,5 @@ export const ReInit = () => {
     mutation.mutate({});
   }, []);
 
-  return (
-    <div className="App flex-center">
-      <Panel style={{ width: '512px' }}>
-        <div className="flex-col" style={{ gap: '12px' }}>
-          <Title>세션 확인 중</Title>
-        </div>
-      </Panel>
-    </div>
-  );
+  return <Loading />;
 };
