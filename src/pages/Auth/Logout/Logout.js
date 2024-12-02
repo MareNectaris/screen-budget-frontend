@@ -18,6 +18,7 @@ export const Logout = () => {
   const signOutPost = async (data) => {
     const response = await axios.post(
       'http://118.34.232.178:3000/api/members/logout',
+      {},
       config
     );
     return response.data;
