@@ -6,6 +6,7 @@ import { Textbox } from '../../../components/Textbox/Textbox';
 export const FirstTimeSetup = () => {
   const [bookName, setBookName] = useState(null);
   const [paymentMethods, setPaymentMethods] = useState({});
+  const setFirstTimeBook = () => {};
   return (
     <div className="App">
       <div
@@ -38,7 +39,9 @@ export const FirstTimeSetup = () => {
           </Panel>
         </div>
         <Panel>
-          <Button variant="contained">설정 완료</Button>
+          <Button variant="contained" onClick={() => setFirstTimeBook()}>
+            설정 완료
+          </Button>
         </Panel>
       </div>
     </div>
