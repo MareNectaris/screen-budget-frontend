@@ -6,23 +6,30 @@ import { Landing } from './pages/Auth/Landing/Landing';
 import { Login } from './pages/Auth/Login/Login';
 import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
+import { ReInit } from './pages/Auth/ReInit/ReInit';
 import { TestPage } from './pages/Test/TestPage';
 import {
   authState,
   firstTimeSetupRequiredState,
+  isReInitState,
   isSignedInState,
 } from './store/Auth';
 function App() {
   const [auth, setAuth] = useRecoilState(authState);
   const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
+  const [isReInit, setIsReInit] = useRecoilState(isReInitState);
   const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
     firstTimeSetupRequiredState
   );
   return (
     <BrowserRouter>
-      {isSignedIn ? (
+      {isReInit ? (
         <Routes>
-          <Route path="/" element={<div>app</div>} />
+          <Route path="*" element={<ReInit />} />
+        </Routes>
+      ) : isSignedIn ? (
+        <Routes>
+          <Route path="*" element={<div>app</div>} />
           <Route path="tests">
             <Route index element={<TestPage />} />
           </Route>
