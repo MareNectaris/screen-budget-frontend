@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { useRecoilState } from 'recoil';
 import './App.css';
+import { Continue } from './pages/Auth/Continue/Continue';
 import { FirstTimeSetup } from './pages/Auth/FirstTimeSetup/FirstTimeSetup';
 import { Landing } from './pages/Auth/Landing/Landing';
 import { Login } from './pages/Auth/Login/Login';
 import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
-import { ReInit } from './pages/Auth/ReInit/ReInit';
 import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
 import { Main } from './pages/Book/Main/Main';
 import { Loading } from './pages/Loading/Loading';
@@ -28,7 +28,7 @@ function App() {
     <BrowserRouter>
       {isReInit ? (
         <Routes>
-          <Route path="*" element={<ReInit />} />
+          <Route path="*" element={<Continue />} />
         </Routes>
       ) : isSignedIn ? (
         <Routes>
