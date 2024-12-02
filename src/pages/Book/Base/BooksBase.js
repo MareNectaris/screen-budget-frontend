@@ -10,7 +10,8 @@ import { NavbarCurrent, NavbarDirectory } from '../../../components/Text/Text';
 export const BooksBase = () => {
   const { bookUuid } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const [majorCategory, setMajorCategory] = useState('');
+  const [minorCategory, setMinorCategory] = useState('');
   return (
     <div className="App">
       {isSidebarOpen && (
@@ -28,12 +29,12 @@ export const BooksBase = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         >
-          <NavbarDirectory>개인 가계부</NavbarDirectory>
+          <NavbarDirectory>{majorCategory}</NavbarDirectory>
           <NavbarDirectory>/</NavbarDirectory>
-          <NavbarCurrent>대시보드</NavbarCurrent>
+          <NavbarCurrent>{minorCategory}</NavbarCurrent>
         </Navbar>
 
-        <Outlet />
+        <Outlet context={{ setMajorCategory, setMinorCategory }} />
       </div>
     </div>
   );
