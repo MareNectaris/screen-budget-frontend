@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { authState, isReInitState, isSignedInState } from '../../../store/Auth';
 import { Loading } from '../../Loading/Loading';
-export const ReInit = () => {
+export const Continue = () => {
   const navigate = useNavigate();
   const [isReInit, setIsReInit] = useRecoilState(isReInitState);
   const [auth, setAuth] = useRecoilState(authState);
