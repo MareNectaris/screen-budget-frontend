@@ -14,6 +14,7 @@ export const Login = () => {
   const [password, setPassword] = useState(null);
   const [auth, setAuth] = useRecoilState(authState);
   const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
+  const [isLoading, setIsLoading] = useState(false);
   const signInPost = async (data) => {
     const response = await axios.post(
       'http://118.34.232.178:3000/api/members/login',
@@ -29,7 +30,11 @@ export const Login = () => {
       setIsSignedIn(true);
     },
     onError: (error) => {
-      console.error('ERR', error);
+      setIsLoading(false);
+      alert(error);
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
   });
   const onEnter = (e) => {
@@ -68,14 +73,20 @@ export const Login = () => {
                 onKeyDown={onEnter}
               />
             </div>
-            <div className="flex-col" style={{ gap: '8px' }}>
-              <Button variant="contained" onClick={() => handleLogin()}>
-                로그인
-              </Button>
-              <Button variant="text" onClick={() => navigate('/register')}>
-                회원 가입
-              </Button>
-            </div>
+            {isLoading ? (
+              <div className="flex-1 flex-row flex-center">
+                <div>로그인 중</div>
+              </div>
+            ) : (
+              <div className="flex-col" style={{ gap: '8px' }}>
+                <Button variant="contained" onClick={() => handleLogin()}>
+                  로그인
+                </Button>
+                <Button variant="text" onClick={() => navigate('/register')}>
+                  회원 가입
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </Panel>
