@@ -1,5 +1,5 @@
 import './Textbox.css';
-export const Textbox = ({ value, type, onKeyDown, setText }) => {
+export const Textbox = ({ value, type, onKeyDown, setText, placeholder }) => {
   return (
     <input
       className="textbox"
@@ -7,6 +7,7 @@ export const Textbox = ({ value, type, onKeyDown, setText }) => {
       onChange={({ target }) => setText(target.value)}
       type={type}
       onKeyDown={onKeyDown}
+      placeholder={placeholder ?? placeholder}
     />
   );
 };
