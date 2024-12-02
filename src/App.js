@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import './App.css';
 import { Landing } from './pages/Auth/Landing/Landing';
 import { Login } from './pages/Auth/Login/Login';
+import { Register } from './pages/Auth/Register/Register';
 import { TestPage } from './pages/Test/TestPage';
 import { authState, isSignedInState } from './store/Auth';
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="*" element={<Landing />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
           <Route path="tests" element={<TestPage />} />
         </Routes>
       )}

@@ -4,16 +4,18 @@ import { Button } from '../../../components/Button/Button';
 import { Panel } from '../../../components/Panel/Panel';
 import { TextboxLabel, Title } from '../../../components/Text/Text';
 import { Textbox } from '../../../components/Textbox/Textbox';
-export const Login = () => {
+export const Register = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [passwordCheck, setPasswordCheck] = useState(null);
+  const [nickname, setNickname] = useState(null);
   const onEnter = (e) => {
     if (e.key === 'Enter') {
-      handleLogin();
+      handleRegister();
     }
   };
-  const handleLogin = () => {
+  const handleRegister = () => {
     if (!email || !password) {
       alert('이메일 및 비밀번호를 입력해 주세요.');
     } else {
@@ -25,13 +27,22 @@ export const Login = () => {
       <Panel style={{ width: '512px' }}>
         <div className="flex-col" style={{ gap: '12px' }}>
           <div className="flex-col" style={{ gap: '12px' }}>
-            <Title>로그인</Title>
+            <Title>회원 가입</Title>
             <div className="flex-col" style={{ gap: '8px' }}>
               <TextboxLabel>이메일 주소</TextboxLabel>
               <Textbox
                 type="email"
                 setText={setEmail}
                 value={email}
+                onKeyDown={onEnter}
+              />
+            </div>
+            <div className="flex-col" style={{ gap: '8px' }}>
+              <TextboxLabel>닉네임</TextboxLabel>
+              <Textbox
+                type="text"
+                setText={setNickname}
+                value={nickname}
                 onKeyDown={onEnter}
               />
             </div>
@@ -45,10 +56,16 @@ export const Login = () => {
               />
             </div>
             <div className="flex-col" style={{ gap: '8px' }}>
-              <Button variant="contained" onClick={() => handleLogin()}>
-                로그인
-              </Button>
-              <Button variant="text" onClick={() => navigate('/register')}>
+              <TextboxLabel>비밀번호 재입력</TextboxLabel>
+              <Textbox
+                type="password"
+                setText={setPasswordCheck}
+                value={passwordCheck}
+                onKeyDown={onEnter}
+              />
+            </div>
+            <div className="flex-col" style={{ gap: '8px' }}>
+              <Button variant="contained" onClick={() => handleRegister()}>
                 회원 가입
               </Button>
             </div>
