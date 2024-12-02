@@ -1,5 +1,3 @@
-export const Textbox = ({children}) => {
-  return (
-    <div></div>
-  )
-}
+export const Textbox = ({ children }) => {
+  return <div></div>;
+};

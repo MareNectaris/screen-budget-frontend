@@ -1,3 +1,3 @@
 export const Stats = () => {
-  return (<div></div>)
-}
+  return <div></div>;
+};
