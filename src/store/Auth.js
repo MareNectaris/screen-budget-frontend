@@ -9,3 +9,8 @@ export const isSignedInState = atom({
   key: 'isSignedInState',
   default: false,
 });
+
+export const firstTimeSetupRequiredState = atom({
+  key: 'firstTimeSetupRequiredState',
+  default: false,
+});
