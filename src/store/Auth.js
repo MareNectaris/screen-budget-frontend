@@ -22,3 +22,8 @@ export const firstTimeSetupRequiredState = atom({
   key: 'firstTimeSetupRequiredState',
   default: false,
 });
+
+export const isReInitState = atom({
+  key: 'isReInitState',
+  default: true,
+});
