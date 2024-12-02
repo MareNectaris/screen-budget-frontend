@@ -17,7 +17,7 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const signInPost = async (data) => {
     const response = await axios.post(
-      'http://118.34.232.178:3000/api/members/login',
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/members/login`,
       data
     );
     return response.data;

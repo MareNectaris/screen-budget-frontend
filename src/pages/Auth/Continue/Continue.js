@@ -16,7 +16,7 @@ export const Continue = () => {
 
   const signInPost = async (data) => {
     const response = await axios.get(
-      'http://118.34.232.178:3000/api/members/profile',
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/members/profile`,
       config
     );
     return response.data;
