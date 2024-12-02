@@ -52,6 +52,23 @@ export const Dashboard = () => {
             </div>
           </Panel>
         </div>
+        <div className="flex-1">
+          <div
+            style={{
+              height: '100%',
+              display: 'grid',
+              gridTemplateColumns: 'auto auto',
+              gridGap: '16px',
+            }}
+          >
+            <Panel style={{ flex: 1 }}>
+              <Title>타임라인</Title>
+            </Panel>
+            <Panel>
+              <Title>경제 뉴스</Title>
+            </Panel>
+          </div>
+        </div>
       </div>
     </div>
   );
