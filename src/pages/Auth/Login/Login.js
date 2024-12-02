@@ -5,6 +5,8 @@ import { Panel } from '../../../components/Panel/Panel';
 import { TextboxLabel, Title } from '../../../components/Text/Text';
 import { Textbox } from '../../../components/Textbox/Textbox';
 export const Login = () => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const onEnter = (e) => {
     if (e.key === 'Enter') {
       handleLogin();
@@ -14,10 +16,9 @@ export const Login = () => {
     if (!email || !password) {
       alert('이메일 및 비밀번호를 입력해 주세요.');
     } else {
+      alert(`${email} ${password}`);
     }
   };
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
   const navigate = useNavigate();
   return (
     <div className="App flex-center">
@@ -29,7 +30,7 @@ export const Login = () => {
               <TextboxLabel>이메일 주소</TextboxLabel>
               <Textbox
                 type="email"
-                onChange={() => setEmail(email)}
+                setText={setEmail}
                 value={email}
                 onKeyDown={onEnter}
               />
@@ -38,7 +39,7 @@ export const Login = () => {
               <TextboxLabel>비밀번호</TextboxLabel>
               <Textbox
                 type="password"
-                onChange={() => setPassword(password)}
+                setText={setPassword}
                 value={password}
                 onKeyDown={onEnter}
               />
