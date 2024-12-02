@@ -9,6 +9,7 @@ import { Panel } from '../../components/Panel/Panel';
 import { ScheduleIndividual } from '../../components/ScheduleIndividual/ScheduleIndividual';
 import { Sidebar } from '../../components/Sidebar/Sidebar';
 import { Title } from '../../components/Text/Text';
+import { Textbox } from '../../components/Textbox/Textbox';
 export const TestPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -65,6 +66,7 @@ export const TestPage = () => {
             />
           </Panel>
           <Panel style={{ width: '50%', height: '616px' }}>
+            <Textbox />
             {selectedTimeline}
 
             <ScheduleIndividual
