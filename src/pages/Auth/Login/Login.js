@@ -28,6 +28,7 @@ export const Login = () => {
       console.log('data received:', data);
       setAuth(data.message?.token);
       setIsSignedIn(true);
+      navigate('/');
     },
     onError: (error) => {
       setIsLoading(false);

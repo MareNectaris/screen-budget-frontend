@@ -1,13 +1,21 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist({
+  key: 'recoil-persist',
+  storage: localStorage,
+});
 
 export const authState = atom({
   key: 'authState',
   default: null,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const isSignedInState = atom({
   key: 'isSignedInState',
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const firstTimeSetupRequiredState = atom({

@@ -4,6 +4,7 @@ import './App.css';
 import { FirstTimeSetup } from './pages/Auth/FirstTimeSetup/FirstTimeSetup';
 import { Landing } from './pages/Auth/Landing/Landing';
 import { Login } from './pages/Auth/Login/Login';
+import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
 import { TestPage } from './pages/Test/TestPage';
 import {
@@ -25,7 +26,9 @@ function App() {
           <Route path="tests">
             <Route index element={<TestPage />} />
           </Route>
-          <Route path="auth"></Route>
+          <Route path="auth">
+            <Route path="logout" element={<Logout />}></Route>
+          </Route>
         </Routes>
       ) : (
         <Routes>
