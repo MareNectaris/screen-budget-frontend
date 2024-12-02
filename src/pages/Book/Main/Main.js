@@ -17,7 +17,7 @@ export const Main = () => {
 
   const accountBooksPost = async (data) => {
     const response = await axios.get(
-      'http://118.34.232.178:3000/api/accountBooks/check',
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/check`,
       config
     );
     return response.data;

@@ -15,7 +15,7 @@ export const FirstTimeSetup = () => {
 
   const createBookPost = async (data) => {
     const response = await axios.post(
-      'http://118.34.232.178:3000/api/accountBooks',
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks`,
       data,
       config
     );

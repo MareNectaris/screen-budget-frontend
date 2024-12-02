@@ -20,7 +20,7 @@ export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const signUpPost = async (data) => {
     const response = await axios.post(
-      'http://118.34.232.178:3000/api/members/register',
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/members/register`,
       data
     );
     return response.data;
