@@ -1,4 +1,4 @@
-.text-title{
+.text-title {
   display: inline;
   font-size: 26px;
   font-style: normal;
@@ -6,17 +6,24 @@
   line-height: normal;
 }
 
-.navbar-text{
+.navbar-text {
   color: #000;
   font-size: 24px;
   font-style: normal;
   line-height: normal;
 }
 
-.nav-bold{
+.nav-bold {
   font-weight: 700;
 }
 
-.nav-medium{
+.nav-medium {
   font-weight: 400;
+}
+
+.intro-title {
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }

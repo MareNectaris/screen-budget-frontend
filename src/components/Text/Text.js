@@ -11,3 +11,7 @@ export const NavbarCurrent = ({ children }) => {
 export const NavbarDirectory = ({ children }) => {
   return <div className="navbar-text nav-medium">{children}</div>;
 };
+
+export const IntroTitle = ({ children }) => {
+  return <div className="intro-title">{children}</div>;
+};
