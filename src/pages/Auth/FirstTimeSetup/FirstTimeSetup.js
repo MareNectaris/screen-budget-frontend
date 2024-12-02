@@ -10,10 +10,10 @@ export const FirstTimeSetup = () => {
   return (
     <div className="App">
       <div
-        className="flex-col"
+        className="flex-col flex-center"
         style={{ gap: '12px', flexGrow: 1, padding: '12px' }}
       >
-        <Panel>
+        <Panel style={{ width: '512px' }}>
           <div className="flex-col" style={{ gap: '16px' }}>
             <Title>첫 가계부 설정</Title>
             <div className="flex-col" style={{ gap: '8px' }}>
@@ -25,23 +25,10 @@ export const FirstTimeSetup = () => {
                 onKeyDown={() => {}}
               />
             </div>
+            <Button variant="contained" onClick={() => setFirstTimeBook()}>
+              설정 완료
+            </Button>
           </div>
-        </Panel>
-        <div
-          className="flex-row space-between"
-          style={{ flex: 1, gap: '26px' }}
-        >
-          <Panel style={{ flex: 1 }}>
-            <Title>카테고리 및 예산 설정</Title>
-          </Panel>
-          <Panel style={{ flex: 1 }}>
-            <Title>결제 수단 설정</Title>
-          </Panel>
-        </div>
-        <Panel>
-          <Button variant="contained" onClick={() => setFirstTimeBook()}>
-            설정 완료
-          </Button>
         </Panel>
       </div>
     </div>
