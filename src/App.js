@@ -7,6 +7,7 @@ import { Login } from './pages/Auth/Login/Login';
 import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
 import { ReInit } from './pages/Auth/ReInit/ReInit';
+import { Main } from './pages/Book/Main/Main';
 import { TestPage } from './pages/Test/TestPage';
 import {
   authState,
@@ -29,13 +30,16 @@ function App() {
         </Routes>
       ) : isSignedIn ? (
         <Routes>
-          <Route path="*" element={<div>app</div>} />
+          <Route path="*" element={<Main />} />
           <Route path="tests">
             <Route index element={<TestPage />} />
           </Route>
           <Route path="auth">
             <Route path="logout" element={<Logout />}></Route>
           </Route>
+          {firstTimeSetupRequired && (
+            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
+          )}
         </Routes>
       ) : (
         <Routes>
@@ -46,9 +50,6 @@ function App() {
             <Route index element={<TestPage />} />
             <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
           </Route>
-          {firstTimeSetupRequired ?? (
-            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
-          )}
         </Routes>
       )}
     </BrowserRouter>
