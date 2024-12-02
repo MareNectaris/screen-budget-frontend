@@ -7,6 +7,7 @@ import { Landing } from './pages/Auth/Landing/Landing';
 import { Login } from './pages/Auth/Login/Login';
 import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
+import { BooksBase } from './pages/Book/Base/BooksBase';
 import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
 import { Main } from './pages/Book/Main/Main';
 import { Loading } from './pages/Loading/Loading';
@@ -44,7 +45,9 @@ function App() {
           {firstTimeSetupRequired && (
             <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
           )}
-          <Route path="/books/:bookUuid" element={<Dashboard />}></Route>
+          <Route path="/books/:bookUuid" element={<BooksBase />}>
+            <Route index element={<Dashboard />} />
+          </Route>
         </Routes>
       ) : (
         <Routes>
