@@ -34,7 +34,7 @@ export const TestPage = () => {
   };
   return (
     <div className="App">
-      {isSidebarOpen && <Sidebar />}
+      {isSidebarOpen && <Sidebar setIsSidebarOpen={setIsSidebarOpen} />}
       <div
         className="flex-col"
         style={{ gap: '12px', flexGrow: 1, padding: '12px' }}
