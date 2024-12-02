@@ -1,13 +1,17 @@
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { useState } from 'react';
-import { useParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useOutletContext, useParams } from 'react-router';
 import { Line } from '../../../../components/Line/Line';
 import { Panel } from '../../../../components/Panel/Panel';
 import { Title } from '../../../../components/Text/Text';
 export const Dashboard = () => {
   const { bookUuid } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const { setMajorCategory, setMinorCategory } = useOutletContext();
+  useEffect(() => {
+    setMajorCategory('개인 가계부');
+    setMinorCategory('대시보드');
+  });
   return (
     <div className="flex-col flex-1" style={{ gap: '12px' }}>
       <div className="flex-row">
