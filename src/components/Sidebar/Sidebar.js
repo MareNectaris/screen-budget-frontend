@@ -1,11 +1,9 @@
-import "./Sidebar.css"
+import './Sidebar.css';
 
-export const Sidebar = ({children}) => {
+export const Sidebar = ({ children }) => {
   return (
     <div className="sidebar-container">
-      <div className="sidebar">
-        {children}
-      </div>
+      <div className="sidebar">{children}</div>
     </div>
-  )
-}
+  );
+};

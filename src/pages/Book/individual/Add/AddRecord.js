@@ -1,3 +1,3 @@
 export const AddRecord = () => {
-  return (<div></div>)
-}
+  return <div></div>;
+};

@@ -1,3 +1,3 @@
 export const FinanceSchedule = () => {
-  return (<div></div>)
-}
+  return <div></div>;
+};

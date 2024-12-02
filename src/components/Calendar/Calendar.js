@@ -2,29 +2,28 @@ import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 import { useState } from 'react';
 import './Calendar.css';
 
-
-export const Calendar = ({schedules = [], onDateSelected}) => {
-  const today = new Date()
+export const Calendar = ({ schedules = [], onDateSelected }) => {
+  const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
-  const [selectedMonth, setSelectedMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  const daysOfWeek = ['일','월','화','수','목','금','토'];
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date(today.getFullYear(), today.getMonth(), 1)
+  );
+  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
   const getDaysInAMonth = (date) => {
     const y = date.getFullYear();
     const m = date.getMonth();
     const day1 = new Date(y, m, 1);
-    const dayLast = new Date(y, m+1, 0);
+    const dayLast = new Date(y, m + 1, 0);
     const days = [];
 
     const day1DayOfWeek = day1.getDay();
     const dayLastDayOfWeek = dayLast.getDay();
 
-    for(let i=day1DayOfWeek-1; i>=0; i--)
-      days.push(new Date(y,m,-i)); // 이번 달 캘린더에 표시되는 저번 달의 날짜
-    for(let i=1; i<=dayLast.getDate(); i++)
-      days.push(new Date(y,m,i)); // 이번 달 캘린더에 표시되는 이번 달 날짜
-    for(let i=1; i<7-dayLastDayOfWeek; i++)
-      days.push(new Date(y,m+1, i)); //이번 달 캘린더에 표시되는 다음 달의 날짜
+    for (let i = day1DayOfWeek - 1; i >= 0; i--) days.push(new Date(y, m, -i)); // 이번 달 캘린더에 표시되는 저번 달의 날짜
+    for (let i = 1; i <= dayLast.getDate(); i++) days.push(new Date(y, m, i)); // 이번 달 캘린더에 표시되는 이번 달 날짜
+    for (let i = 1; i < 7 - dayLastDayOfWeek; i++)
+      days.push(new Date(y, m + 1, i)); //이번 달 캘린더에 표시되는 다음 달의 날짜
     return days;
   };
 
@@ -32,11 +31,15 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    if(onDateSelected) onDateSelected(date);
+    if (onDateSelected) onDateSelected(date);
   };
 
   const handleMonthChange = (pointer) => {
-    const newMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth()+pointer,1);
+    const newMonth = new Date(
+      selectedMonth.getFullYear(),
+      selectedMonth.getMonth() + pointer,
+      1
+    );
     setSelectedMonth(newMonth);
   };
 
@@ -56,17 +59,22 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
     <div className="calendar">
       <div className="calendar-header">
         <div>
-          <div className="month-title">{selectedMonth.getFullYear()}년 {selectedMonth.getMonth() + 1}월</div>
-          
+          <div className="month-title">
+            {selectedMonth.getFullYear()}년 {selectedMonth.getMonth() + 1}월
+          </div>
         </div>
-        <div className="flex-1">
-
-        </div>
-        <button className="calendar-switch-button" onClick={() => handleMonthChange(-1)}>
-          <ArrowBackIosNew/>
+        <div className="flex-1"></div>
+        <button
+          className="calendar-switch-button"
+          onClick={() => handleMonthChange(-1)}
+        >
+          <ArrowBackIosNew />
         </button>
-        <button className="calendar-switch-button" onClick={() => handleMonthChange(1)}>
-          <ArrowForwardIos/>
+        <button
+          className="calendar-switch-button"
+          onClick={() => handleMonthChange(1)}
+        >
+          <ArrowForwardIos />
         </button>
       </div>
       <div className="days-of-week">
@@ -75,7 +83,7 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
             <div key={d} className="day-of-week">
               {d}
             </div>
-          )
+          );
         })}
       </div>
       <div className="days">
@@ -84,21 +92,23 @@ export const Calendar = ({schedules = [], onDateSelected}) => {
             <div
               key={idx}
               className={`day
-                ${date.getMonth()===selectedMonth.getMonth()?"":"other-month"}
+                ${date.getMonth() === selectedMonth.getMonth() ? '' : 'other-month'}
                 
                 `}
               onClick={() => handleDateClick(date)}
             >
               <div className="flex-row">
-                <div className={`${date.toDateString() === selectedDate.toDateString()? "date-selected":""}`}>
+                <div
+                  className={`${date.toDateString() === selectedDate.toDateString() ? 'date-selected' : ''}`}
+                >
                   {date.getDate()}
                 </div>
-                <div className={`${dateHasEvent(date)?"has-event":""}`}/>
+                <div className={`${dateHasEvent(date) ? 'has-event' : ''}`} />
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};

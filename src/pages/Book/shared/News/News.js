@@ -1,3 +1,3 @@
 export const NewsList = () => {
-  return (<div></div>)
-}
+  return <div></div>;
+};
