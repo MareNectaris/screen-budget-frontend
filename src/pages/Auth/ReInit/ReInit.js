@@ -27,7 +27,7 @@ export const ReInit = () => {
     onSuccess: (data) => {
       console.log(data);
       setIsReInit(false);
-      navigate('/');
+      navigate('.');
     },
     onError: (error) => {
       setIsReInit(false);

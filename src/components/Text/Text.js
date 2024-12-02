@@ -1,40 +1,40 @@
 import './Text.css';
 
-export const Title = ({ children, style }) => {
+export const Title = ({ children, style, className }) => {
   return (
-    <div className="text-title" style={style}>
+    <div className={`text-title ${className}`} style={style}>
       {children}
     </div>
   );
 };
 
-export const NavbarCurrent = ({ children, style }) => {
+export const NavbarCurrent = ({ children, style, className }) => {
   return (
-    <div className="navbar-text nav-bold" style={style}>
+    <div className={`navbar-text nav-bold ${className}`} style={style}>
       {children}
     </div>
   );
 };
 
-export const NavbarDirectory = ({ children, style }) => {
+export const NavbarDirectory = ({ children, style, className }) => {
   return (
-    <div className="navbar-text nav-medium" style={style}>
+    <div className={`navbar-text nav-medium ${className}`} style={style}>
       {children}
     </div>
   );
 };
 
-export const IntroTitle = ({ children, style }) => {
+export const IntroTitle = ({ children, style, className }) => {
   return (
-    <div className="intro-title" style={style}>
+    <div className={`intro-title ${className}`} style={style}>
       {children}
     </div>
   );
 };
 
-export const TextboxLabel = ({ children, style }) => {
+export const TextboxLabel = ({ children, style, className }) => {
   return (
-    <div className="textbox-label" style={style}>
+    <div className={`textbox-label ${className}`} style={style}>
       {children}
     </div>
   );
