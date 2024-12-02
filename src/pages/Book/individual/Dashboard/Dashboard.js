@@ -1,3 +1,7 @@
+import { useParams } from 'react-router';
+
 export const Dashboard = () => {
-  return <div></div>;
+  const { bookUuid } = useParams();
+  console.log(bookUuid);
+  return <div>{bookUuid}</div>;
 };
