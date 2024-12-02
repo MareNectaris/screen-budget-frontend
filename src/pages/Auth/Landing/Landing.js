@@ -9,7 +9,7 @@ export const Landing = () => {
       <Panel style={{ width: '512px' }}>
         <div className="flex-col" style={{ gap: '12px' }}>
           <div className="flex-center">
-            <div className="flex-col">
+            <div className="">
               <div>허들 없는 가계부의 시작</div>
               <IntroTitle>Screen Budget</IntroTitle>
             </div>
