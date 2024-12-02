@@ -17,7 +17,7 @@ export const Main = () => {
 
   const accountBooksPost = async (data) => {
     const response = await axios.get(
-      'http://118.34.232.178:3000/api/accountBooks',
+      'http://118.34.232.178:3000/api/accountBooks/check',
       config
     );
     return response.data;
@@ -26,10 +26,13 @@ export const Main = () => {
   const mutation = useMutation({
     mutationFn: accountBooksPost,
     onSuccess: (data) => {
-      console.log(data);
-      if (!data?.accountBooks || data?.accountBooks.length === 0) {
+      if (!data.exists || !data) {
         setFirstTimeSetupRequired(true);
         navigate('/firstTimeSetup');
+      } else {
+        console.log(data);
+        const accountBookUuid = data.accountBook.uuid;
+        navigate(`/books/${accountBookUuid}`);
       }
     },
     onError: (error) => {
@@ -40,5 +43,6 @@ export const Main = () => {
   useEffect(() => {
     mutation.mutate({});
   }, []);
-  return <div></div>;
+
+  return <div className="App"></div>;
 };
