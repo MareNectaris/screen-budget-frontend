@@ -1,13 +1,37 @@
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useRecoilState } from 'recoil';
 import { Button } from '../../../components/Button/Button';
 import { Panel } from '../../../components/Panel/Panel';
 import { TextboxLabel, Title } from '../../../components/Text/Text';
 import { Textbox } from '../../../components/Textbox/Textbox';
+import { authState, isSignedInState } from '../../../store/Auth';
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [auth, setAuth] = useRecoilState(authState);
+  const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
+  const signInPost = async (data) => {
+    const response = await axios.post(
+      'http://118.34.232.178:3000/api/members/login',
+      data
+    );
+    return response.data;
+  };
+  const mutation = useMutation({
+    mutationFn: signInPost,
+    onSuccess: (data) => {
+      console.log('data received:', data);
+      setAuth(data.message?.token);
+      setIsSignedIn(true);
+    },
+    onError: (error) => {
+      console.error('ERR', error);
+    },
+  });
   const onEnter = (e) => {
     if (e.key === 'Enter') {
       handleLogin();
@@ -17,7 +41,7 @@ export const Login = () => {
     if (!email || !password) {
       alert('이메일 및 비밀번호를 입력해 주세요.');
     } else {
-      alert(`${email} ${password}`);
+      mutation.mutate({ email: email, password: password });
     }
   };
   return (

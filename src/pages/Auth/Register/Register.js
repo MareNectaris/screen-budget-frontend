@@ -2,19 +2,24 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useRecoilState } from 'recoil';
 import { Button } from '../../../components/Button/Button';
 import { Panel } from '../../../components/Panel/Panel';
 import { TextboxLabel, Title } from '../../../components/Text/Text';
 import { Textbox } from '../../../components/Textbox/Textbox';
+import { firstTimeSetupRequiredState } from '../../../store/Auth';
 export const Register = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [passwordCheck, setPasswordCheck] = useState(null);
   const [nickname, setNickname] = useState(null);
+  const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
+    firstTimeSetupRequiredState
+  );
   const signUpPost = async (data) => {
     const response = await axios.post(
-      'http://corsproxy.io/?http://118.34.232.178:3000/api/members/register',
+      'http://118.34.232.178:3000/api/members/register',
       data
     );
     return response.data;
@@ -23,7 +28,8 @@ export const Register = () => {
     mutationFn: signUpPost,
     onSuccess: (data) => {
       console.log('data received:', data);
-      navigate('/login');
+      setFirstTimeSetupRequired(true);
+      navigate('/firstTimeSetup');
     },
     onError: (error) => {
       console.error('ERR', error);

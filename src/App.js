@@ -1,14 +1,22 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { useRecoilState } from 'recoil';
 import './App.css';
+import { FirstTimeSetup } from './pages/Auth/FirstTimeSetup/FirstTimeSetup';
 import { Landing } from './pages/Auth/Landing/Landing';
 import { Login } from './pages/Auth/Login/Login';
 import { Register } from './pages/Auth/Register/Register';
 import { TestPage } from './pages/Test/TestPage';
-import { authState, isSignedInState } from './store/Auth';
+import {
+  authState,
+  firstTimeSetupRequiredState,
+  isSignedInState,
+} from './store/Auth';
 function App() {
   const [auth, setAuth] = useRecoilState(authState);
   const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
+  const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
+    firstTimeSetupRequiredState
+  );
   return (
     <BrowserRouter>
       {isSignedIn ? (
@@ -24,7 +32,13 @@ function App() {
           <Route path="*" element={<Landing />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="tests" element={<TestPage />} />
+          <Route path="tests">
+            <Route index element={<TestPage />} />
+            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
+          </Route>
+          {firstTimeSetupRequired ?? (
+            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
+          )}
         </Routes>
       )}
     </BrowserRouter>
