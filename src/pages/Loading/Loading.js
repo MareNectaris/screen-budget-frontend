@@ -13,3 +13,16 @@ export const Loading = ({ text }) => {
     </div>
   );
 };
+
+export const LoadingNoBackground = ({ text }) => {
+  return (
+    <div className="flex-1 flex-center">
+      <Panel style={{ width: '512px' }}>
+        <div className="flex-col flex-center" style={{ gap: '12px' }}>
+          <div className="spinner" />
+          <TextboxLabel>{text ? text : '로딩 중'}</TextboxLabel>
+        </div>
+      </Panel>
+    </div>
+  );
+};
