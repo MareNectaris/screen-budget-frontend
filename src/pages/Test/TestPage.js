@@ -8,6 +8,10 @@ import { Navbar } from '../../components/Navbar/Navbar';
 import { Panel } from '../../components/Panel/Panel';
 import { ScheduleIndividual } from '../../components/ScheduleIndividual/ScheduleIndividual';
 import { Sidebar } from '../../components/Sidebar/Sidebar';
+import {
+  SidebarMenuItemPrimary,
+  SidebarMenuItemSecondary,
+} from '../../components/Sidebar/SidebarMenuItem';
 import { Title } from '../../components/Text/Text';
 import { Textbox } from '../../components/Textbox/Textbox';
 export const TestPage = () => {
@@ -34,7 +38,13 @@ export const TestPage = () => {
   };
   return (
     <div className="App">
-      {isSidebarOpen && <Sidebar setIsSidebarOpen={setIsSidebarOpen} />}
+      {isSidebarOpen && (
+        <Sidebar setIsSidebarOpen={setIsSidebarOpen}>
+          <SidebarMenuItemPrimary expandable="true" text="Expandable">
+            <SidebarMenuItemSecondary>child</SidebarMenuItemSecondary>
+          </SidebarMenuItemPrimary>
+        </Sidebar>
+      )}
       <div
         className="flex-col"
         style={{ gap: '12px', flexGrow: 1, padding: '12px' }}
