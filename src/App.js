@@ -9,6 +9,7 @@ import { Register } from './pages/Auth/Register/Register';
 import { ReInit } from './pages/Auth/ReInit/ReInit';
 import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
 import { Main } from './pages/Book/Main/Main';
+import { Loading } from './pages/Loading/Loading';
 import { TestPage } from './pages/Test/TestPage';
 import {
   authState,
@@ -35,6 +36,7 @@ function App() {
           <Route path="tests">
             <Route index element={<TestPage />} />
             <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
+            <Route path="loading" element={<Loading />} />
           </Route>
           <Route path="auth">
             <Route path="logout" element={<Logout />}></Route>
