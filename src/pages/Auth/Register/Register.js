@@ -17,6 +17,7 @@ export const Register = () => {
   const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
     firstTimeSetupRequiredState
   );
+  const [isLoading, setIsLoading] = useState(false);
   const signUpPost = async (data) => {
     const response = await axios.post(
       'http://118.34.232.178:3000/api/members/register',
@@ -32,7 +33,11 @@ export const Register = () => {
       navigate('/firstTimeSetup');
     },
     onError: (error) => {
-      console.error('ERR', error);
+      setIsLoading(false);
+      alert(error);
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
   });
 
@@ -92,11 +97,17 @@ export const Register = () => {
                 onKeyDown={onEnter}
               />
             </div>
-            <div className="flex-col" style={{ gap: '8px' }}>
-              <Button variant="contained" onClick={() => handleRegister()}>
-                회원 가입
-              </Button>
-            </div>
+            {isLoading ? (
+              <div className="flex-1 flex-row flex-center">
+                <div>처리 중</div>
+              </div>
+            ) : (
+              <div className="flex-col" style={{ gap: '8px' }}>
+                <Button variant="contained" onClick={() => handleRegister()}>
+                  회원 가입
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </Panel>
