@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button } from '../../../components/Button/Button';
@@ -10,16 +12,36 @@ export const Register = () => {
   const [password, setPassword] = useState(null);
   const [passwordCheck, setPasswordCheck] = useState(null);
   const [nickname, setNickname] = useState(null);
+  const signUpPost = async (data) => {
+    const response = await axios.post(
+      'http://corsproxy.io/?http://118.34.232.178:3000/api/members/register',
+      data
+    );
+    return response.data;
+  };
+  const mutation = useMutation({
+    mutationFn: signUpPost,
+    onSuccess: (data) => {
+      console.log('data received:', data);
+      navigate('/login');
+    },
+    onError: (error) => {
+      console.error('ERR', error);
+    },
+  });
+
   const onEnter = (e) => {
     if (e.key === 'Enter') {
       handleRegister();
     }
   };
   const handleRegister = () => {
-    if (!email || !password) {
+    if (!email || !password || !passwordCheck || !nickname) {
       alert('이메일 및 비밀번호를 입력해 주세요.');
+    } else if (password !== passwordCheck) {
+      alert('입력한 비밀번호가 서로 일치하지 않습니다.');
     } else {
-      alert(`${email} ${password}`);
+      mutation.mutate({ email: email, password: password, nickname: nickname });
     }
   };
   return (
