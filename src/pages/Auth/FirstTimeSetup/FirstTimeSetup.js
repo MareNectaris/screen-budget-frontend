@@ -5,6 +5,7 @@ import { TextboxLabel, Title } from '../../../components/Text/Text';
 import { Textbox } from '../../../components/Textbox/Textbox';
 export const FirstTimeSetup = () => {
   const [bookName, setBookName] = useState(null);
+  const [paymentMethods, setPaymentMethods] = useState({});
   return (
     <div className="App">
       <div
