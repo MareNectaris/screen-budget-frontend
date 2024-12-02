@@ -4,11 +4,8 @@ import './Sidebar.css';
 export const Sidebar = ({ children, setIsSidebarOpen }) => {
   return (
     <div className="sidebar-container">
-      <div className="sidebar flex-col">
-        <div
-          className="flex-row"
-          style={{ padding: '12px', alignItems: 'center' }}
-        >
+      <div className="sidebar flex-col" style={{ padding: '12px' }}>
+        <div className="flex-row" style={{ alignItems: 'center' }}>
           <Title style={{ flex: 1 }}>Screen Budget</Title>
           <UnfoldLessDoubleIcon
             style={{ cursor: 'pointer' }}
