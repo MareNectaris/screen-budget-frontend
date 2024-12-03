@@ -16,8 +16,17 @@ export const BooksBase = () => {
     <div className="App">
       {isSidebarOpen && (
         <Sidebar setIsSidebarOpen={setIsSidebarOpen}>
-          <SidebarMenuItemPrimary expandable="true" text="Expandable">
-            <SidebarMenuItemSecondary>child</SidebarMenuItemSecondary>
+          <SidebarMenuItemPrimary expandable="true" text="개인 가계부">
+            <SidebarMenuItemSecondary highlighted>
+              대시보드
+            </SidebarMenuItemSecondary>
+            <SidebarMenuItemSecondary>
+              타임라인 및 캘린더
+            </SidebarMenuItemSecondary>
+            <SidebarMenuItemSecondary>테이블</SidebarMenuItemSecondary>
+            <SidebarMenuItemSecondary>금융 일정</SidebarMenuItemSecondary>
+            <SidebarMenuItemSecondary>통계 보기</SidebarMenuItemSecondary>
+            <SidebarMenuItemSecondary>가계부 설정</SidebarMenuItemSecondary>
           </SidebarMenuItemPrimary>
         </Sidebar>
       )}

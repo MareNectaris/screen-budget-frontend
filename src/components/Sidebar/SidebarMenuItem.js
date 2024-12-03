@@ -55,7 +55,7 @@ export const SidebarMenuItemPrimary = ({
 export const SidebarMenuItemSecondary = ({ children, highlighted }) => {
   return (
     <div
-      className={`sidebar-menu-item-secondary ${highlighted ?? 'item-secondary-highlighted'}`}
+      className={`sidebar-menu-item-secondary ${highlighted && 'item-secondary-highlighted'}`}
     >
       {children}
     </div>
