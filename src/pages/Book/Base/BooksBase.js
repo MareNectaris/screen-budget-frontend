@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { Navbar } from '../../../components/Navbar/Navbar';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
@@ -14,6 +14,7 @@ import { authState } from '../../../store/Auth';
 export const BooksBase = () => {
   const navigate = useNavigate();
   const { bookUuid } = useParams();
+  const { hash, pathname, search } = useLocation();
   const [auth, setAuth] = useRecoilState(authState);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [majorCategory, setMajorCategory] = useState('');
