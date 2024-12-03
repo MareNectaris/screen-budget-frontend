@@ -5,9 +5,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
+import { FAB } from '../../../../components/FAB/FAB';
 import { Line } from '../../../../components/Line/Line';
 import { NewsItem } from '../../../../components/NewsItem/NewsItem';
 import { Panel } from '../../../../components/Panel/Panel';
+import { ScheduleIndividual } from '../../../../components/ScheduleIndividual/ScheduleIndividual';
 import { Title } from '../../../../components/Text/Text';
 import { authState } from '../../../../store/Auth';
 import { LoadingNoBackground } from '../../../Loading/Loading';
@@ -164,6 +166,16 @@ export const Dashboard = () => {
               <Title className="flex-1">타임라인</Title>
               <NavigateNextIcon />
             </div>
+            <div className="flex-col">
+              <ScheduleIndividual
+                paymentLocation="거래처"
+                memo="메모"
+                category="카테고리"
+                color="#09c06e"
+                paymentMethod="AMEX Platinum"
+                amount="33400"
+              />
+            </div>
           </Panel>
           <Panel>
             <div className="flex-row flex-center pointer">
@@ -178,6 +190,7 @@ export const Dashboard = () => {
           </Panel>
         </div>
       </div>
+      <FAB />
     </div>
   );
 };
