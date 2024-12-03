@@ -16,6 +16,7 @@ export const Main = () => {
   };
 
   const accountBooksPost = async (data) => {
+    // 가계부 생성 여부 확인해서 가계부가 없으면 firstTimeSetup으로
     const response = await axios.get(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/check`,
       config

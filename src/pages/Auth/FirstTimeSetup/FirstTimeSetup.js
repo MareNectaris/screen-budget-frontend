@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { Button } from '../../../components/Button/Button';
 import { Panel } from '../../../components/Panel/Panel';
 import { TextboxLabel, Title } from '../../../components/Text/Text';
@@ -10,9 +10,9 @@ import { authState } from '../../../store/Auth';
 export const FirstTimeSetup = () => {
   const [bookName, setBookName] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [auth, setAuth] = useRecoilState(authState);
+  const auth = useRecoilValue(authState);
   const config = { headers: { Authorization: auth } };
-
+  // 첫 가계부 생성
   const createBookPost = async (data) => {
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks`,
@@ -25,7 +25,7 @@ export const FirstTimeSetup = () => {
   const mutation = useMutation({
     mutationFn: createBookPost,
     onSuccess: (data) => {
-      console.log('data received:', data);
+      //console.log('data received:', data);
     },
     onError: (error) => {
       alert(error);

@@ -13,13 +13,11 @@ import { Main } from './pages/Book/Main/Main';
 import { Loading } from './pages/Loading/Loading';
 import { TestPage } from './pages/Test/TestPage';
 import {
-  authState,
   firstTimeSetupRequiredState,
   isReInitState,
   isSignedInState,
 } from './store/Auth';
 function App() {
-  const [auth, setAuth] = useRecoilState(authState);
   const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
   const [isReInit, setIsReInit] = useRecoilState(isReInitState);
   const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
