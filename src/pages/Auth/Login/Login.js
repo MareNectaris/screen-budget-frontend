@@ -26,7 +26,7 @@ export const Login = () => {
     mutationFn: signInPost,
     onSuccess: (data) => {
       //console.log('data received:', data);
-      setAuth(data.message?.token);
+      setAuth(data?.token);
       setIsSignedIn(true);
       navigate('/');
     },
