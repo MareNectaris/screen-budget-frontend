@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Button } from '../../../components/Button/Button';
 import { Panel } from '../../../components/Panel/Panel';
@@ -8,6 +9,7 @@ import { TextboxLabel, Title } from '../../../components/Text/Text';
 import { Textbox } from '../../../components/Textbox/Textbox';
 import { authState } from '../../../store/Auth';
 export const FirstTimeSetup = () => {
+  const navigate = useNavigate();
   const [bookName, setBookName] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const auth = useRecoilValue(authState);
@@ -26,6 +28,7 @@ export const FirstTimeSetup = () => {
     mutationFn: createBookPost,
     onSuccess: (data) => {
       //console.log('data received:', data);
+      navigate('/');
     },
     onError: (error) => {
       alert(error);

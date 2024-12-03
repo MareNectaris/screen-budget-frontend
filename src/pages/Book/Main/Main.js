@@ -32,7 +32,7 @@ export const Main = () => {
         navigate('/firstTimeSetup');
       } else {
         console.log(data);
-        const accountBookUuid = data.accountBook.uuid;
+        const accountBookUuid = data.accountBook._id;
         navigate(`/books/${accountBookUuid}`);
       }
     },
