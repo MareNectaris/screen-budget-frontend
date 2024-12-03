@@ -1,31 +1,44 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
-* { font-family: 'Spoqa Han Sans Neo', 'sans-serif'; }
-
-.App{
-  background: url("../public/bg.jpg");
-  background-size: cover;
-  display: flex;
-  flex-direction: row;
-}
-
-body, html, .App, #root{
+* {
+  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body, html, .App, #root {
   width: 100%;
   height: 100%;
 }
 
-.flex-col{
+.App {
+  background: url("../public/bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.flex-col {
   display: flex;
   flex-direction: column;
 }
 
-.flex-row{
+.flex-row {
   display: flex;
   flex-direction: row;
 }
 
-.flex-center{
+.flex-center {
   justify-content: center;
   align-items: center;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+}
+
+.table-container {
+  margin: 0 16px 16px 16px; /* 양옆 및 아래쪽 마진 */
 }
