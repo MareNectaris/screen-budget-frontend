@@ -2,7 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
+import { NewsItem } from '../../../../components/NewsItem/NewsItem';
 import { Panel } from '../../../../components/Panel/Panel';
+import { Title } from '../../../../components/Text/Text';
 
 export const NewsList = () => {
   const [news, setNews] = useState({ hankyung: [], mk: [] });
