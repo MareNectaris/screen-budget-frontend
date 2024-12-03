@@ -10,8 +10,8 @@ import { Textbox } from '../../../components/Textbox/Textbox';
 import { authState, isSignedInState } from '../../../store/Auth';
 export const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [auth, setAuth] = useRecoilState(authState);
   const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
   const [isLoading, setIsLoading] = useState(false);

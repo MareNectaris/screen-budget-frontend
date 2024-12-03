@@ -10,10 +10,10 @@ import { Textbox } from '../../../components/Textbox/Textbox';
 import { firstTimeSetupRequiredState } from '../../../store/Auth';
 export const Register = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [passwordCheck, setPasswordCheck] = useState(null);
-  const [nickname, setNickname] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [nickname, setNickname] = useState('');
   const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
     firstTimeSetupRequiredState
   );

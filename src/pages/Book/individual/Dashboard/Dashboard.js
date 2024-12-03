@@ -29,9 +29,9 @@ export const Dashboard = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRadio, setSelectedRadio] = useState();
-  const [newTransactionName, setNewTransactionName] = useState(null);
+  const [newTransactionName, setNewTransactionName] = useState('');
   const [newCategoryUuid, setNewCategoryUuid] = useState(null);
-  const [newAmount, setNewAmount] = useState(null);
+  const [newAmount, setNewAmount] = useState('');
   const [newPaymentMethodUuid, setNewPaymentMethodUuid] = useState(null);
   const handleRadioChange = (val) => {
     setSelectedRadio(val);
