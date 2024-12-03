@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import './Table.css';
 
-const TableComponent = ({ accountBookUuid }) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// API 호출 함수
+const fetchTransactions = async (bookUuid) => {
+  const response = await fetch(
+    `http://118.34.232.178:3000/api/transactions/${bookUuid}/daily`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to fetch transactions');
+  }
+  return response.json();
+};
 
-  useEffect(() => {
-    // API 호출
-    const fetchTransactions = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `/api/transactions/${accountBookUuid}/daily`
-        );
-        if (!response.ok) {
-          throw new Error('Failed to fetch transactions');
-        }
-        const result = await response.json();
-        setData(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+export const Table = () => {
+  const { bookUuid } = useParams(); // URL 파라미터에서 bookUuid 가져오기
 
-    fetchTransactions();
-  }, [accountBookUuid]);
+  // React Query로 데이터 가져오기
+  const { data, isLoading, error } = useQuery(
+    ['transactions', bookUuid],
+    () => fetchTransactions(bookUuid)
+  );
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading) return <div>Loading...</div>; // 로딩 상태
+  if (error) return <div>Error: {error.message}</div>; // 에러 상태
 
   return (
     <div className="table-container">
@@ -45,7 +39,7 @@ const TableComponent = ({ accountBookUuid }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((transaction, index) => (
+          {data.data.map((transaction, index) => (
             <tr key={transaction.uuid}>
               <td>{index + 1}</td>
               <td>{new Date(transaction.date).toLocaleDateString()}</td>
@@ -60,4 +54,4 @@ const TableComponent = ({ accountBookUuid }) => {
   );
 };
 
-export default TableComponent;
+export default Table;
