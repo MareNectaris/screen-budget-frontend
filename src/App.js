@@ -1,66 +1,64 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
-import { useRecoilState } from 'recoil';
+import React, { useState } from 'react'; // useState를 React에서 함께 임포트
 import './App.css';
-import { Continue } from './pages/Auth/Continue/Continue';
-import { FirstTimeSetup } from './pages/Auth/FirstTimeSetup/FirstTimeSetup';
-import { Landing } from './pages/Auth/Landing/Landing';
-import { Login } from './pages/Auth/Login/Login';
-import { Logout } from './pages/Auth/Logout/Logout';
-import { Register } from './pages/Auth/Register/Register';
-import { BooksBase } from './pages/Book/Base/BooksBase';
-import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
-import { NewsList } from './pages/Book/individual/News/News';
-import { Main } from './pages/Book/Main/Main';
-import { Loading } from './pages/Loading/Loading';
-import { TestPage } from './pages/Test/TestPage';
-import {
-  firstTimeSetupRequiredState,
-  isReInitState,
-  isSignedInState,
-} from './store/Auth';
 function App() {
-  const [isSignedIn, setIsSignedIn] = useRecoilState(isSignedInState);
-  const [isReInit, setIsReInit] = useRecoilState(isReInitState);
-  const [firstTimeSetupRequired, setFirstTimeSetupRequired] = useRecoilState(
-    firstTimeSetupRequiredState
-  );
+  const [isModalOpen, setIsModalOpen] = useState(false); // 상태 관리 훅
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 상태 관리 훅
+
+  const columns = [
+    { Header: '#', accessor: 'number' },
+    { Header: '분류', accessor: 'category' },
+    { Header: '카테고리', accessor: 'subcategory' },
+    { Header: '결제수단', accessor: 'paymentMethod' },
+    { Header: '결제 내역명', accessor: 'paymentDetails' },
+    { Header: '금액', accessor: 'amount' },
+    { Header: '메모', accessor: 'memo' },
+  ];
+
+  const data = [
+    {
+      number: 1,
+      category: '식비',
+      subcategory: '외식',
+      paymentMethod: '신용카드',
+      paymentDetails: '스타벅스 커피',
+      amount: '5,000원',
+      memo: '아침 커피',
+    },
+    {
+      number: 2,
+      category: '교통',
+      subcategory: '버스',
+      paymentMethod: '현금',
+      paymentDetails: '버스 요금',
+      amount: '1,200원',
+      memo: '출근',
+    },
+  ];
+
   return (
-    <BrowserRouter>
-      {isReInit ? (
-        <Routes>
-          <Route path="*" element={<Continue />} />
-        </Routes>
-      ) : isSignedIn ? (
-        <Routes>
-          <Route path="*" element={<Main />} />
-          <Route path="tests">
-            <Route index element={<TestPage />} />
-            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
-            <Route path="loading" element={<Loading />} />
-          </Route>
-          <Route path="auth">
-            <Route path="logout" element={<Logout />}></Route>
-          </Route>
-          {firstTimeSetupRequired && (
-            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
-          )}
-          <Route path="/books/:bookUuid" element={<BooksBase />}>
-            <Route index element={<Dashboard />} />
-            <Route path="news" element={<NewsList />} />
-          </Route>
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path="*" element={<Landing />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="tests">
-            <Route index element={<TestPage />} />
-            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
-          </Route>
-        </Routes>
-      )}
-    </BrowserRouter>
+    <div className="App">
+      <Sidebar isOpen={isSidebarOpen} />
+      <div className="content">
+        <Textbox />
+        <Navbar />
+        <Panel>
+          <Title>Panel Test</Title>
+          <div>asdf</div>
+        </Panel>
+        <Button
+          variant="contained"
+          onClick={() => setIsModalOpen(!isModalOpen)}
+        >
+          asdf
+        </Button>
+        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+          asdf
+        </Modal>
+      </div>
+      <div className="table-container">
+        <TableComponent columns={columns} data={data} />
+      </div>
+    </div>
   );
 }
 
