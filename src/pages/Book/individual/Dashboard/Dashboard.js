@@ -14,6 +14,7 @@ import { Panel } from '../../../../components/Panel/Panel';
 import { Radio } from '../../../../components/Radio/Radio';
 import { ScheduleIndividual } from '../../../../components/ScheduleIndividual/ScheduleIndividual';
 import { TextboxLabel, Title } from '../../../../components/Text/Text';
+import { Textbox } from '../../../../components/Textbox/Textbox';
 import { authState } from '../../../../store/Auth';
 import { LoadingNoBackground } from '../../../Loading/Loading';
 export const Dashboard = () => {
@@ -31,6 +32,9 @@ export const Dashboard = () => {
   const handleRadioChange = (val) => {
     setSelectedRadio(val);
   };
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
   const calculateTodayExpensesAndIncome = () => {
     let expenseSum = 0;
     let incomeSum = 0;
@@ -91,11 +95,10 @@ export const Dashboard = () => {
         setEconomyNews(_economyNews.data);
       }
       if (_categories?.data) {
-        setCategories(_economyNews.data);
+        setCategories(_categories.data);
       }
       if (_paymentMethods?.data) {
-        //data 맞는지 확인
-        //set
+        setPaymentMethods(_paymentMethods.data);
       }
     },
     onError: (error) => {
@@ -192,14 +195,24 @@ export const Dashboard = () => {
               <NavigateNextIcon />
             </div>
             <div className="flex-col">
-              <ScheduleIndividual
-                paymentLocation="거래처"
-                memo="메모"
-                category="카테고리"
-                color="#09c06e"
-                paymentMethod="AMEX Platinum"
-                amount="33400"
-              />
+              {today.transactions?.map((transaction) => {
+                const categoryObj = categories?.find(
+                  (p) => p.uuid === transaction.categoryUuid
+                );
+                const paymentMethodObj = paymentMethods?.find(
+                  (p) => p.uuid === transaction.paymentMethodUuid
+                );
+                return (
+                  <ScheduleIndividual
+                    paymentLocation={transaction.name}
+                    category={categoryObj.name}
+                    color={categoryObj.color}
+                    paymentMethod={paymentMethodObj.name}
+                    transactionType={transaction.type}
+                    amount={transaction.amount}
+                  />
+                );
+              })}
             </div>
           </Panel>
           <Panel>
@@ -240,6 +253,7 @@ export const Dashboard = () => {
         <TextboxLabel>거래처</TextboxLabel>
 
         <TextboxLabel>카테고리</TextboxLabel>
+        <Textbox />
         <TextboxLabel>금액</TextboxLabel>
         <TextboxLabel>결제 수단</TextboxLabel>
         <TextboxLabel>메모</TextboxLabel>

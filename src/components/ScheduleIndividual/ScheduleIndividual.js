@@ -9,6 +9,7 @@ export const ScheduleIndividual = ({
   color,
   paymentMethod,
   amount,
+  transactionType,
 }) => {
   return (
     <div className="flex-col">
@@ -16,7 +17,10 @@ export const ScheduleIndividual = ({
         <div className="payment-location">{paymentLocation}</div>
         <div className="payment-memo">{memo}</div>
         <div className="flex-1" />
-        <div className="payment-amount">{floorAndFormatNumber(amount)}원</div>
+        <div className="payment-amount">
+          {transactionType === 'income' ? '+' : '-'}
+          {floorAndFormatNumber(amount)}원
+        </div>
       </div>
       <div className="flex-row gap-6px align-center">
         <CategoryChip color={color}>{category}</CategoryChip>
