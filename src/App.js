@@ -9,6 +9,7 @@ import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
 import { BooksBase } from './pages/Book/Base/BooksBase';
 import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
+import { NewsList } from './pages/Book/individual/News/News';
 import { Main } from './pages/Book/Main/Main';
 import { Loading } from './pages/Loading/Loading';
 import { TestPage } from './pages/Test/TestPage';
@@ -45,6 +46,7 @@ function App() {
           )}
           <Route path="/books/:bookUuid" element={<BooksBase />}>
             <Route index element={<Dashboard />} />
+            <Route path="news" element={<NewsList />} />
           </Route>
         </Routes>
       ) : (

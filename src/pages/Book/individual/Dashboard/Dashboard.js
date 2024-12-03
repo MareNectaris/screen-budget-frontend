@@ -16,7 +16,6 @@ import { ScheduleIndividual } from '../../../../components/ScheduleIndividual/Sc
 import { TextboxLabel, Title } from '../../../../components/Text/Text';
 import { Textbox } from '../../../../components/Textbox/Textbox';
 import { authState } from '../../../../store/Auth';
-import { LoadingNoBackground } from '../../../Loading/Loading';
 export const Dashboard = () => {
   const { bookUuid } = useParams();
   const navigate = useNavigate();
@@ -105,9 +104,7 @@ export const Dashboard = () => {
     onError: (error) => {
       alert(error);
     },
-    onMutate: () => {
-      return <LoadingNoBackground />;
-    },
+    onMutate: () => {},
   });
 
   useEffect(() => {
