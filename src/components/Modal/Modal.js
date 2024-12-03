@@ -13,7 +13,10 @@ export const Modal = ({ children, isOpen, setIsOpen, title }) => {
                 <div className="flex-1">
                   <Title>{title}</Title>
                 </div>
-                <Close onClick={() => setIsOpen(!isOpen)} />
+                <Close
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setIsOpen(!isOpen)}
+                />
               </div>
               <div className="flex-col">{children}</div>
             </div>
