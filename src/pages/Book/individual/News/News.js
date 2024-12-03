@@ -35,7 +35,7 @@ export const NewsList = () => {
   });
   return (
     <div className="flex-col flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
-      <div className="flex-row">
+      <div className="flex-row flex-1" style={{ minHeight: 0 }}>
         <div
           style={{
             display: 'grid',
