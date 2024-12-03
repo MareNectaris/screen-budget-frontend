@@ -231,57 +231,69 @@ export const Dashboard = () => {
       </div>
       <FAB onClick={() => setIsModalOpen(!isModalOpen)} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
-        <TextboxLabel>분류</TextboxLabel>
-        <div className="flex-row gap-6px">
-          <Radio
-            name="category"
-            value="expense"
-            checked={selectedRadio === 'expense'}
-            handleChange={handleRadioChange}
-          >
-            지출
-          </Radio>
-          <Radio
-            name="category"
-            value="income"
-            checked={selectedRadio === 'income'}
-            handleChange={handleRadioChange}
-          >
-            수입
-          </Radio>
-        </div>
+        <div className="flex-col" style={{ gap: '12px' }}>
+          <div className="flex-col">
+            <TextboxLabel>분류</TextboxLabel>
+            <div className="flex-row gap-6px">
+              <Radio
+                name="category"
+                value="expense"
+                checked={selectedRadio === 'expense'}
+                handleChange={handleRadioChange}
+              >
+                지출
+              </Radio>
+              <Radio
+                name="category"
+                value="income"
+                checked={selectedRadio === 'income'}
+                handleChange={handleRadioChange}
+              >
+                수입
+              </Radio>
+            </div>
+          </div>
+          <div className="flex-col">
+            <TextboxLabel>거래처</TextboxLabel>
+            <Textbox
+              type="text"
+              value={newTransactionName}
+              setText={setNewTransactionName}
+              onKeyDown={() => {}}
+            />
+          </div>
 
-        <TextboxLabel>거래처</TextboxLabel>
-        <Textbox
-          type="text"
-          value={newTransactionName}
-          setText={setNewTransactionName}
-          onKeyDown={() => {}}
-        />
-        <TextboxLabel>카테고리</TextboxLabel>
-        <select className="select">
-          {categories?.map((elem) => {
-            return (
-              <option value={elem.uuid} style={{ color: elem.color }}>
-                {elem.name}
-              </option>
-            );
-          })}
-        </select>
-        <TextboxLabel>금액</TextboxLabel>
-        <Textbox
-          type="number"
-          value={newAmount}
-          setText={setNewAmount}
-          onKeyDown={() => {}}
-        />
-        <TextboxLabel>결제 수단</TextboxLabel>
-        <select className="select">
-          {paymentMethods?.map((elem) => {
-            return <option value={elem.uuid}>{elem.name}</option>;
-          })}
-        </select>
-        <Button variant="contained">기록 추가</Button>
+          <div className="flex-col">
+            <TextboxLabel>카테고리</TextboxLabel>
+            <select className="select">
+              {categories?.map((elem) => {
+                return (
+                  <option value={elem.uuid} style={{ color: elem.color }}>
+                    {elem.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex-col">
+            <TextboxLabel>금액</TextboxLabel>
+            <Textbox
+              type="number"
+              value={newAmount}
+              setText={setNewAmount}
+              onKeyDown={() => {}}
+            />
+          </div>
+          <div className="flex-col">
+            <TextboxLabel>결제 수단</TextboxLabel>
+            <select className="select">
+              {paymentMethods?.map((elem) => {
+                return <option value={elem.uuid}>{elem.name}</option>;
+              })}
+            </select>
+          </div>
+          <Button variant="contained">기록 추가</Button>
+        </div>
       </Modal>
     </div>
   );
