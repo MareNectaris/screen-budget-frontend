@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { Outlet, useParams } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Outlet, useNavigate, useParams } from 'react-router';
+import { useRecoilState } from 'recoil';
 import { Navbar } from '../../../components/Navbar/Navbar';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
 import {
@@ -7,11 +10,40 @@ import {
   SidebarMenuItemSecondary,
 } from '../../../components/Sidebar/SidebarMenuItem';
 import { NavbarCurrent, NavbarDirectory } from '../../../components/Text/Text';
+import { authState } from '../../../store/Auth';
 export const BooksBase = () => {
+  const navigate = useNavigate();
   const { bookUuid } = useParams();
+  const [auth, setAuth] = useRecoilState(authState);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [majorCategory, setMajorCategory] = useState('');
   const [minorCategory, setMinorCategory] = useState('');
+  const [books, setBooks] = useState([]);
+  const config = {
+    headers: { Authorization: `${auth}` },
+  };
+
+  const booksPost = async (data) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks`,
+      config
+    );
+    return response.data;
+  };
+  const mutation = useMutation({
+    mutationFn: booksPost,
+    onSuccess: (data) => {
+      setBooks(data.accountBooks);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+    onMutate: () => {},
+  });
+
+  useEffect(() => {
+    mutation.mutate();
+  }, []);
   return (
     <div className="App">
       {isSidebarOpen && (
