@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { floorAndFormatNumber } from '@toss/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router';
+import { Link, useNavigate, useOutletContext, useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { Button } from '../../../../components/Button/Button';
 import { FAB } from '../../../../components/FAB/FAB';
@@ -214,10 +214,12 @@ export const Dashboard = () => {
             </div>
           </Panel>
           <Panel>
-            <div className="flex-row flex-center pointer">
-              <Title className="flex-1">경제 뉴스</Title>
-              <NavigateNextIcon />
-            </div>
+            <Link to="/news" style={{ textDecoration: 'none', color: '#000' }}>
+              <div className="flex-row flex-center pointer">
+                <Title className="flex-1">경제 뉴스</Title>
+                <NavigateNextIcon />
+              </div>
+            </Link>
             <div className="flex-col">
               {economyNews.hankyung.map((elem) => {
                 return <NewsItem text={elem.title} to={elem.link} />;
