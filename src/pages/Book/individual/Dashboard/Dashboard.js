@@ -25,16 +25,17 @@ export const Dashboard = () => {
   const [today, setToday] = useState({ transactions: [], schedules: [] });
   const [todayStats, setTodayStats] = useState({ expense: 0, income: 0 });
   const [economyNews, setEconomyNews] = useState({ hankyung: [], mk: [] });
-  const [categories, setCategories] = useState({});
-  const [paymentMethods, setPaymentMethods] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [paymentMethods, setPaymentMethods] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRadio, setSelectedRadio] = useState();
+  const [newTransactionName, setNewTransactionName] = useState(null);
+  const [newCategoryUuid, setNewCategoryUuid] = useState(null);
+  const [newAmount, setNewAmount] = useState(null);
+  const [newPaymentMethodUuid, setNewPaymentMethodUuid] = useState(null);
   const handleRadioChange = (val) => {
     setSelectedRadio(val);
   };
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
   const calculateTodayExpensesAndIncome = () => {
     let expenseSum = 0;
     let incomeSum = 0;
@@ -251,12 +252,35 @@ export const Dashboard = () => {
         </div>
 
         <TextboxLabel>거래처</TextboxLabel>
-
+        <Textbox
+          type="text"
+          value={newTransactionName}
+          setText={setNewTransactionName}
+          onKeyDown={() => {}}
+        />
         <TextboxLabel>카테고리</TextboxLabel>
-        <Textbox />
+        <select className="select">
+          {categories?.map((elem) => {
+            return (
+              <option value={elem.uuid} style={{ color: elem.color }}>
+                {elem.name}
+              </option>
+            );
+          })}
+        </select>
         <TextboxLabel>금액</TextboxLabel>
+        <Textbox
+          type="number"
+          value={newAmount}
+          setText={setNewAmount}
+          onKeyDown={() => {}}
+        />
         <TextboxLabel>결제 수단</TextboxLabel>
-        <TextboxLabel>메모</TextboxLabel>
+        <select className="select">
+          {paymentMethods?.map((elem) => {
+            return <option value={elem.uuid}>{elem.name}</option>;
+          })}
+        </select>
         <Button variant="contained">기록 추가</Button>
       </Modal>
     </div>
