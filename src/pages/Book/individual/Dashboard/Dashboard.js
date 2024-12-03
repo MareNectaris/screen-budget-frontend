@@ -61,6 +61,14 @@ export const Dashboard = () => {
         config
       ),
       axios.get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/economy`),
+      axios.get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${bookUuid}`,
+        config
+      ),
+      axios.get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/paymentMethods/${bookUuid}`,
+        config
+      ),
     ];
 
     const responses = await Promise.all(requests);
@@ -71,7 +79,8 @@ export const Dashboard = () => {
   const mutation = useMutation({
     mutationFn: dashboardPost,
     onSuccess: (dataArr) => {
-      const [_monthly, _today, _economyNews] = dataArr;
+      const [_monthly, _today, _economyNews, _categories, _paymentMethods] =
+        dataArr;
       if (_monthly?.data) {
         setMonthly(_monthly.data);
       }
@@ -80,6 +89,13 @@ export const Dashboard = () => {
       }
       if (_economyNews?.data) {
         setEconomyNews(_economyNews.data);
+      }
+      if (_categories?.data) {
+        setCategories(_economyNews.data);
+      }
+      if (_paymentMethods?.data) {
+        //data 맞는지 확인
+        //set
       }
     },
     onError: (error) => {
@@ -222,6 +238,7 @@ export const Dashboard = () => {
         </div>
 
         <TextboxLabel>거래처</TextboxLabel>
+
         <TextboxLabel>카테고리</TextboxLabel>
         <TextboxLabel>금액</TextboxLabel>
         <TextboxLabel>결제 수단</TextboxLabel>
