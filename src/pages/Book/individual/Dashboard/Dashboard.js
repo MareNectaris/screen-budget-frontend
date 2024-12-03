@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { Line } from '../../../../components/Line/Line';
+import { NewsItem } from '../../../../components/NewsItem/NewsItem';
 import { Panel } from '../../../../components/Panel/Panel';
 import { Title } from '../../../../components/Text/Text';
 import { authState } from '../../../../store/Auth';
@@ -92,14 +93,14 @@ export const Dashboard = () => {
     setMinorCategory('대시보드');
   });
   return (
-    <div className="flex-col flex-1" style={{ gap: '12px' }}>
+    <div className="flex-col flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
       <div className="flex-row">
         <Panel className="flex-1">
           <Title>브리핑</Title>
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'auto auto',
+              gridTemplateColumns: '1fr 1fr',
               gridGap: '16px',
               paddingTop: '12px',
             }}
@@ -149,13 +150,13 @@ export const Dashboard = () => {
           </div>
         </Panel>
       </div>
-      <div className="flex-1">
+      <div className="flex-1" style={{ minHeight: 0 }}>
         <div
           style={{
-            height: '100%',
             display: 'grid',
-            gridTemplateColumns: 'auto auto',
+            gridTemplateColumns: '1fr 1fr',
             gridGap: '16px',
+            height: '100%',
           }}
         >
           <Panel>
@@ -168,6 +169,11 @@ export const Dashboard = () => {
             <div className="flex-row flex-center pointer">
               <Title className="flex-1">경제 뉴스</Title>
               <NavigateNextIcon />
+            </div>
+            <div className="flex-col">
+              {economyNews.hankyung.map((elem) => {
+                return <NewsItem text={elem.title} to={elem.link} />;
+              })}
             </div>
           </Panel>
         </div>
