@@ -1,0 +1,23 @@
+label.radio {
+  cursor: pointer;
+}
+label.radio input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+label.radio span {
+  padding: 4px 12px;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+label.radio input:checked + span {
+  background: #7e03d5;
+  color: #fff;
+}

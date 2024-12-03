@@ -5,12 +5,15 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
+import { Button } from '../../../../components/Button/Button';
 import { FAB } from '../../../../components/FAB/FAB';
 import { Line } from '../../../../components/Line/Line';
+import { Modal } from '../../../../components/Modal/Modal';
 import { NewsItem } from '../../../../components/NewsItem/NewsItem';
 import { Panel } from '../../../../components/Panel/Panel';
+import { Radio } from '../../../../components/Radio/Radio';
 import { ScheduleIndividual } from '../../../../components/ScheduleIndividual/ScheduleIndividual';
-import { Title } from '../../../../components/Text/Text';
+import { TextboxLabel, Title } from '../../../../components/Text/Text';
 import { authState } from '../../../../store/Auth';
 import { LoadingNoBackground } from '../../../Loading/Loading';
 export const Dashboard = () => {
@@ -21,7 +24,13 @@ export const Dashboard = () => {
   const [today, setToday] = useState({ transactions: [], schedules: [] });
   const [todayStats, setTodayStats] = useState({ expense: 0, income: 0 });
   const [economyNews, setEconomyNews] = useState({ hankyung: [], mk: [] });
-
+  const [categories, setCategories] = useState({});
+  const [paymentMethods, setPaymentMethods] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRadio, setSelectedRadio] = useState();
+  const handleRadioChange = (val) => {
+    setSelectedRadio(val);
+  };
   const calculateTodayExpensesAndIncome = () => {
     let expenseSum = 0;
     let incomeSum = 0;
@@ -190,7 +199,35 @@ export const Dashboard = () => {
           </Panel>
         </div>
       </div>
-      <FAB />
+      <FAB onClick={() => setIsModalOpen(!isModalOpen)} />
+      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
+        <TextboxLabel>분류</TextboxLabel>
+        <div className="flex-row gap-6px">
+          <Radio
+            name="category"
+            value="expense"
+            checked={selectedRadio === 'expense'}
+            handleChange={handleRadioChange}
+          >
+            지출
+          </Radio>
+          <Radio
+            name="category"
+            value="income"
+            checked={selectedRadio === 'income'}
+            handleChange={handleRadioChange}
+          >
+            수입
+          </Radio>
+        </div>
+
+        <TextboxLabel>거래처</TextboxLabel>
+        <TextboxLabel>카테고리</TextboxLabel>
+        <TextboxLabel>금액</TextboxLabel>
+        <TextboxLabel>결제 수단</TextboxLabel>
+        <TextboxLabel>메모</TextboxLabel>
+        <Button variant="contained">기록 추가</Button>
+      </Modal>
     </div>
   );
 };
