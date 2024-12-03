@@ -25,7 +25,7 @@ export const Login = () => {
   const mutation = useMutation({
     mutationFn: signInPost,
     onSuccess: (data) => {
-      console.log('data received:', data);
+      //console.log('data received:', data);
       setAuth(data.message?.token);
       setIsSignedIn(true);
       navigate('/');
