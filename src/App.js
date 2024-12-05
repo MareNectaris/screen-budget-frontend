@@ -1,4 +1,3 @@
-import { TableView } from '@mui/icons-material';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { useRecoilState } from 'recoil';
 import './App.css';
@@ -14,6 +13,7 @@ import { FinanceSchedule } from './pages/Book/individual/FinanceSchedule/Finance
 import { NewsList } from './pages/Book/individual/News/News';
 import { Settings } from './pages/Book/individual/Settings/Settings';
 import { Stats } from './pages/Book/individual/Stats/Stats';
+import { TableView } from './pages/Book/individual/TableView/TableView';
 import { TimelineAndCalendar } from './pages/Book/individual/TimelineAndCalendar/TimelineAndCalendar';
 import { Main } from './pages/Book/Main/Main';
 import { Loading } from './pages/Loading/Loading';
