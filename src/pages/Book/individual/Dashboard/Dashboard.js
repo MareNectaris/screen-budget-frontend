@@ -258,6 +258,7 @@ export const Dashboard = () => {
                     paymentMethod={paymentMethodObj?.name}
                     transactionType={transaction.type}
                     amount={transaction.amount}
+                    _id={transaction._id}
                   />
                 );
               })}

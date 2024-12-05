@@ -10,9 +10,10 @@ export const ScheduleIndividual = ({
   paymentMethod,
   amount,
   transactionType,
+  _id,
 }) => {
   return (
-    <div className="flex-col">
+    <div className="flex-col" key={_id}>
       <div className="flex-row gap-6px align-center">
         <div className="payment-location">{paymentLocation}</div>
         <div className="payment-memo">{memo}</div>
