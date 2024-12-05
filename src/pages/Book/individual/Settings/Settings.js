@@ -152,11 +152,13 @@ export const Settings = ({}) => {
   });
 
   const handleAddCategory = () => {
-    addMutation.mutate({
-      name: newCategory.name,
-      color: newCategory.color,
-      dailyBudget: parseInt(newCategory.daily, 10) || 0,
-    });
+    if (!newCategory.color) alert('색상이 설정되지 않았습니다.');
+    else
+      addMutation.mutate({
+        name: newCategory.name,
+        color: newCategory.color,
+        dailyBudget: parseInt(newCategory.daily, 10) || 0,
+      });
   };
   const categoryDelete = async (idToDelete) => {
     const response = await axios.delete(
