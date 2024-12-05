@@ -29,13 +29,26 @@ export const TimelineAndCalendar = () => {
   const [categories, setCategories] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState();
+  const [selectedRadioModify, setSelectedRadioModify] = useState();
   const [newTransactionName, setNewTransactionName] = useState('');
+  const [modifyTransactionName, setModifyTransactionName] = useState('');
+  const [modifyCategoryId, setModifyCategoryId] = useState(null);
   const [newCategoryId, setNewCategoryId] = useState(null);
   const [newPaymentMethodId, setNewPaymentMethodId] = useState(null);
+  const [modifyPaymentMethodId, setModifyPaymentMethodId] = useState(null);
   const [newAmount, setNewAmount] = useState('');
-
+  const [modifyAmount, setModifyAmount] = useState('');
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const handleScheduleOpen = (key) => {
+    setSelectedSchedule(key);
+    setIsScheduleModalOpen(true);
+  };
   const handleRadioChange = (val) => {
     setSelectedRadio(val);
+  };
+  const handleRadioModifyChange = (val) => {
+    setSelectedRadioModify(val);
   };
   const { bookUuid } = useParams();
   const getKSTDate = (date) => {
@@ -132,17 +145,45 @@ export const TimelineAndCalendar = () => {
     newTransactionPostMutation.mutate(newRecord);
   };
 
+  const transactionPut = async (record) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/${selectedSchedule}`,
+      record,
+      config
+    );
+    return response.data;
+  };
+  const transactionPutMutation = useMutation({
+    mutationFn: (record) => transactionPut(record),
+    onSuccess: (data) => {
+      navigate(0);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
+  const handleModifyRecord = () => {
+    transactionPutMutation.mutate({
+      name: modifyTransactionName,
+      categoryId: modifyCategoryId,
+      amount: modifyAmount,
+      paymentMethod: modifyPaymentMethodId,
+      payementMethod: modifyPaymentMethodId,
+      type: selectedRadioModify,
+    });
+  };
   useEffect(() => {
     perDateMutation.mutate({
       date: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${('0' + selectedDate.getDate()).slice(-2)}`,
     });
-  }, [selectedDate]);
+  }, [selectedDate, bookUuid]);
   useEffect(() => {
     perMonthMutation.mutate({
       year: selectedYear,
       month: selectedMonth,
     });
-  }, [selectedYear, selectedMonth]);
+  }, [selectedYear, selectedMonth, bookUuid]);
   useEffect(() => {
     setMajorCategory(bookName);
   }, [bookName]);
@@ -232,6 +273,8 @@ export const TimelineAndCalendar = () => {
                           transactionType={transaction.type}
                           amount={transaction.amount}
                           _id={transaction._id}
+                          onClick={(key) => handleScheduleOpen(key)}
+                          style={{ cursor: 'pointer' }}
                         />
                       );
                     }
@@ -323,6 +366,102 @@ export const TimelineAndCalendar = () => {
             </div>
             <Button variant="contained" onClick={() => handleAddRecord()}>
               기록 추가
+            </Button>
+          </div>
+        ) : (
+          <div className="flex-col flex-center gap-6px">
+            카테고리 또는 결제 수단 중 하나 이상이 설정되어 있지 않습니다.
+            <br />
+            <div className="flex-row">
+              <Link to="settings">가계부 설정</Link>으로 이동하여 카테고리와
+              결제 수단 모두가 설정되어 있는지 확인해 주세요.
+            </div>
+          </div>
+        )}
+      </Modal>
+      <Modal
+        isOpen={isScheduleModalOpen}
+        setIsOpen={setIsScheduleModalOpen}
+        title="기록 수정"
+      >
+        {categories.length > 0 && paymentMethods.length > 0 ? (
+          <div className="flex-col" style={{ gap: '12px' }}>
+            <div className="flex-col">
+              <TextboxLabel>분류</TextboxLabel>
+              <div className="flex-row gap-6px">
+                <Radio
+                  name="category"
+                  value="expense"
+                  checked={selectedRadioModify === 'expense'}
+                  handleChange={handleRadioModifyChange}
+                >
+                  지출
+                </Radio>
+                <Radio
+                  name="category"
+                  value="income"
+                  checked={selectedRadioModify === 'income'}
+                  handleChange={handleRadioModifyChange}
+                >
+                  수입
+                </Radio>
+              </div>
+            </div>
+            <div className="flex-col">
+              <TextboxLabel>거래처</TextboxLabel>
+              <Textbox
+                type="text"
+                value={modifyTransactionName}
+                setText={setModifyTransactionName}
+                onKeyDown={() => {}}
+              />
+            </div>
+
+            <div className="flex-col">
+              <TextboxLabel>카테고리</TextboxLabel>
+              <select
+                className="select"
+                value={modifyCategoryId || ''}
+                onChange={(e) => setModifyCategoryId(e.target.value)}
+              >
+                <option value="" disabled>
+                  카테고리 선택
+                </option>
+                {categories?.map((elem) => {
+                  return (
+                    <option value={elem._id} style={{ color: elem.color }}>
+                      {elem?.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="flex-col">
+              <TextboxLabel>금액</TextboxLabel>
+              <Textbox
+                type="number"
+                value={modifyAmount}
+                setText={setModifyAmount}
+                onKeyDown={() => {}}
+              />
+            </div>
+            <div className="flex-col">
+              <TextboxLabel>결제 수단</TextboxLabel>
+              <select
+                className="select"
+                value={modifyPaymentMethodId || ''}
+                onChange={(e) => setModifyPaymentMethodId(e.target.value)}
+              >
+                <option value="" disabled>
+                  결제 수단 선택
+                </option>
+                {paymentMethods?.map((elem) => {
+                  return <option value={elem._id}>{elem?.name}</option>;
+                })}
+              </select>
+            </div>
+            <Button variant="contained" onClick={() => handleModifyRecord()}>
+              기록 수정
             </Button>
           </div>
         ) : (

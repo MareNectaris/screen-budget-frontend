@@ -11,9 +11,19 @@ export const ScheduleIndividual = ({
   amount,
   transactionType,
   _id,
+  onClick,
+  style,
 }) => {
   return (
-    <div className="flex-col" key={_id}>
+    <div
+      className="flex-col"
+      key={_id}
+      id={_id}
+      style={style}
+      onClick={() => {
+        if (onClick) onClick(_id);
+      }}
+    >
       <div className="flex-row gap-6px align-center">
         <div className="payment-location">{paymentLocation}</div>
         <div className="payment-memo">{memo}</div>
