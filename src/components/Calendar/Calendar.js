@@ -1,13 +1,27 @@
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
-import { useState } from 'react';
+import { floorAndFormatNumber } from '@toss/utils';
+import { useEffect, useState } from 'react';
 import './Calendar.css';
 
-export const Calendar = ({ schedules = [], onDateSelected }) => {
+export const Calendar = ({
+  schedules = [],
+  onDateSelected,
+  selectedMonthOnly,
+  setSelectedMonthOnly,
+  selectedYear,
+  setSelectedYear,
+}) => {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedMonth, setSelectedMonth] = useState(
     new Date(today.getFullYear(), today.getMonth(), 1)
   );
+
+  useEffect(() => {
+    setSelectedYear(selectedMonth.getFullYear());
+    setSelectedMonthOnly(selectedMonth.getMonth() + 1);
+  }, [selectedMonth]);
+
   const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
   const getDaysInAMonth = (date) => {
@@ -43,16 +57,30 @@ export const Calendar = ({ schedules = [], onDateSelected }) => {
     setSelectedMonth(newMonth);
   };
 
-  // 해당 날짜에 일정이 있는지 확인
+  // // 해당 날짜에 일정이 있는지 확인
+  // const dateHasEvent = (date) => {
+  //   return schedules.some((event) => {
+  //     const eventDate = new Date(event.date);
+  //     return (
+  //       eventDate.getFullYear() === date.getFullYear() &&
+  //       eventDate.getMonth() === date.getMonth() &&
+  //       eventDate.getDate() === date.getDate()
+  //     );
+  //   });
+  // };
+
+  // 일정이 있으면 일정 그 자체를 return
   const dateHasEvent = (date) => {
-    return schedules.some((event) => {
-      const eventDate = new Date(event.date);
-      return (
-        eventDate.getFullYear() === date.getFullYear() &&
-        eventDate.getMonth() === date.getMonth() &&
-        eventDate.getDate() === date.getDate()
-      );
-    });
+    return (
+      schedules.find((element) => {
+        const eventDate = new Date(element.date);
+        return (
+          date.getFullYear() === eventDate.getFullYear() &&
+          date.getMonth() === eventDate.getMonth() &&
+          date.getDate() === eventDate.getDate()
+        );
+      }) || null
+    );
   };
 
   return (
@@ -104,6 +132,16 @@ export const Calendar = ({ schedules = [], onDateSelected }) => {
                   {date.getDate()}
                 </div>
                 <div className={`${dateHasEvent(date) ? 'has-event' : ''}`} />
+              </div>
+              <div style={{ color: '#388E3C' }}>
+                {dateHasEvent(date) && dateHasEvent(date).totalIncome > 0
+                  ? `+${floorAndFormatNumber(dateHasEvent(date).totalIncome)}`
+                  : null}
+              </div>
+              <div style={{ color: '#D32F2F' }}>
+                {dateHasEvent(date) && dateHasEvent(date).totalExpense > 0
+                  ? `-${floorAndFormatNumber(dateHasEvent(date).totalExpense)}`
+                  : null}
               </div>
             </div>
           );
