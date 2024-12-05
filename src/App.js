@@ -16,8 +16,6 @@ import { Stats } from './pages/Book/individual/Stats/Stats';
 import { TableView } from './pages/Book/individual/TableView/TableView';
 import { TimelineAndCalendar } from './pages/Book/individual/TimelineAndCalendar/TimelineAndCalendar';
 import { Main } from './pages/Book/Main/Main';
-import { Loading } from './pages/Loading/Loading';
-import { TestPage } from './pages/Test/TestPage';
 import {
   firstTimeSetupRequiredState,
   isReInitState,
@@ -38,11 +36,6 @@ function App() {
       ) : isSignedIn ? (
         <Routes>
           <Route path="*" element={<Main />} />
-          <Route path="tests">
-            <Route index element={<TestPage />} />
-            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
-            <Route path="loading" element={<Loading />} />
-          </Route>
           <Route path="auth">
             <Route path="logout" element={<Logout />}></Route>
           </Route>
@@ -67,10 +60,6 @@ function App() {
           <Route path="*" element={<Landing />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="tests">
-            <Route index element={<TestPage />} />
-            <Route path="firstTimeSetup" element={<FirstTimeSetup />} />
-          </Route>
         </Routes>
       )}
     </BrowserRouter>

@@ -165,6 +165,12 @@ export const BooksBase = () => {
             text="뉴스"
             onClick={() => navigate('/news')}
           />
+          <SidebarMenuItemPrimary
+            expandable={false}
+            type="logout"
+            text="로그아웃"
+            onClick={() => navigate('/auth/logout')}
+          />
         </Sidebar>
       )}
       <div

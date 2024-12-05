@@ -2,6 +2,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddIcon from '@mui/icons-material/Add';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LogoutIcon from '@mui/icons-material/Logout';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import { useState } from 'react';
 import './SidebarMenuItem.css';
@@ -40,8 +41,10 @@ export const SidebarMenuItemPrimary = ({
           <AccountBoxIcon />
         ) : type === 'news' ? (
           <NewspaperIcon />
+        ) : type === 'add' ? (
+          <AddIcon />
         ) : (
-          (type === 'add' ?? <AddIcon />)
+          type === 'logout' && <LogoutIcon />
         )}
         <div className="flex-1">{text}</div>
       </div>
