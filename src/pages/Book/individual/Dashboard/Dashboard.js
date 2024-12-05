@@ -202,10 +202,10 @@ export const Dashboard = () => {
                 );
                 return (
                   <ScheduleIndividual
-                    paymentLocation={transaction.name}
-                    category={categoryObj.name}
-                    color={categoryObj.color}
-                    paymentMethod={paymentMethodObj.name}
+                    paymentLocation={transaction?.name}
+                    category={categoryObj?.name}
+                    color={categoryObj?.color}
+                    paymentMethod={paymentMethodObj?.name}
                     transactionType={transaction.type}
                     amount={transaction.amount}
                   />
@@ -268,7 +268,7 @@ export const Dashboard = () => {
               {categories?.map((elem) => {
                 return (
                   <option value={elem.uuid} style={{ color: elem.color }}>
-                    {elem.name}
+                    {elem?.name}
                   </option>
                 );
               })}
@@ -287,7 +287,7 @@ export const Dashboard = () => {
             <TextboxLabel>결제 수단</TextboxLabel>
             <select className="select">
               {paymentMethods?.map((elem) => {
-                return <option value={elem.uuid}>{elem.name}</option>;
+                return <option value={elem.uuid}>{elem?.name}</option>;
               })}
             </select>
           </div>
