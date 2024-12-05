@@ -1,21 +1,24 @@
+import AddIcon from '@mui/icons-material/Add';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Button } from '../../../../components/Button/Button';
 import { Modal } from '../../../../components/Modal/Modal';
 import { Panel } from '../../../../components/Panel/Panel';
+import { PaymentMethodIndividual } from '../../../../components/PaymentMethodIndividual/PaymentMethodIndividual';
 import SettingsTable from '../../../../components/Settings/Settings';
 import { TextboxLabel, Title } from '../../../../components/Text/Text';
 import { Textbox } from '../../../../components/Textbox/Textbox';
 import { authState } from '../../../../store/Auth';
 export const Settings = ({}) => {
-  const { setMajorCategory, setMinorCategory } = useOutletContext();
+  const { setMajorCategory, setMinorCategory, books, setBooks } =
+    useOutletContext();
   useEffect(() => {
-    setMajorCategory('개인 가계부');
     setMinorCategory('가계부 설정');
   }, []);
+  const navigate = useNavigate();
   const [auth, setAuth] = useRecoilState(authState);
   const { bookUuid } = useParams();
   const [categories, setCategories] = useState([]);
@@ -27,6 +30,34 @@ export const Settings = ({}) => {
     daily: '',
     monthly: '',
   });
+  const [membersToChange, setMembersToChange] = useState([]);
+  const [isPaymentMethodAddModalOpen, setIsPaymentMethodAddModalOpen] =
+    useState(false);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [newPaymentMethodName, setNewPaymentMethodName] = useState('');
+  const paymentMethodPost = async (data) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/paymentMethods/${bookUuid}`,
+      data,
+      config
+    );
+    return response.data;
+  };
+  const paymentMethodPostMutation = useMutation({
+    mutationFn: (data) => paymentMethodPost(data),
+    onSuccess: (data) => {
+      navigate(0);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+  const handleAddPaymentMethod = () => {
+    paymentMethodPostMutation.mutate({
+      name: newPaymentMethodName,
+    });
+    setNewPaymentMethodName('');
+  };
   const config = {
     headers: { Authorization: `${auth}` },
   };
@@ -65,10 +96,6 @@ export const Settings = ({}) => {
     },
     onMutate: () => {},
   });
-
-  useEffect(() => {
-    mutation.mutate();
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -138,7 +165,7 @@ export const Settings = ({}) => {
     );
     return response.data;
   };
-  const deleteMutation = useMutation({
+  const categoryDeleteMutation = useMutation({
     mutationFn: (idToDelete) => categoryDelete(idToDelete),
     onSuccess: (data, idToDelete) => {
       setCategories(
@@ -151,54 +178,205 @@ export const Settings = ({}) => {
     },
     onMutate: () => {},
   });
-  const handleDeleteCategory = (id) => {
-    deleteMutation.mutate(id);
+  const bookChange = async (data) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/${bookUuid}`,
+      data,
+      config
+    );
+    return response.data;
   };
-  return (
-    <div className="flex-row flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
-      <div className="flex-1" style={{ minHeight: 0 }}>
-        <div
-          style={{
-            display: 'grid',
-            gridGap: '16px',
-            gridTemplateRows: '1fr 1fr',
-            height: '100%',
-          }}
-        >
-          <Panel>
-            <Title>카테고리 설정</Title>
-            <SettingsTable
-              categories={categories}
-              setCategories={setCategories}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-              newCategory={newCategory}
-              setNewCategory={setNewCategory}
-              handleInputChange={handleInputChange}
-              handleDeleteCategory={handleDeleteCategory}
-            />
-          </Panel>
-          <Panel></Panel>
-        </div>
-      </div>
-      <div className="flex-1" style={{ minHeight: 0 }}>
-        <div className="flex-col" style={{ gap: '16px' }}>
-          <Panel>
-            <Title>가계부 설정</Title>
-            <div className="flex-col">
-              <TextboxLabel>가계부 이름</TextboxLabel>
-              <Textbox
-                type="text"
-                value={bookName}
-                setText={setBookName}
-                onKeyDown={() => {}}
-              />
-            </div>
-          </Panel>
-          <Panel></Panel>
-        </div>
-      </div>
+  const bookChangeMutation = useMutation({
+    mutationFn: (data) => bookChange(data),
+    onSuccess: (data) => {
+      navigate(0); //refresh
+    },
 
+    onError: (error) => {
+      alert(error);
+    },
+    onMutate: () => {},
+  });
+  const bookDelete = async (data) => {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/${bookUuid}`,
+      config
+    );
+    return response.data;
+  };
+  const bookDeleteMutation = useMutation({
+    mutationFn: bookDelete,
+    onSuccess: (data) => {
+      navigate('/'); //to top
+    },
+
+    onError: (error) => {
+      alert(error);
+    },
+    onMutate: () => {},
+  });
+  const handleDeleteCategory = (id) => {
+    categoryDeleteMutation.mutate(id);
+  };
+  const handleChangeBookName = () => {
+    bookChangeMutation.mutate({
+      name: bookName,
+    });
+  };
+  const handleDeleteBook = () => {
+    bookDeleteMutation.mutate();
+  };
+  const paymentMethodGet = async (data) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/paymentMethods/${bookUuid}`,
+      config
+    );
+    return response.data;
+  };
+  const paymentMethodGetMutation = useMutation({
+    mutationFn: paymentMethodGet,
+    onSuccess: (data) => {
+      if (data?.data) setPaymentMethods(data.data);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+  const paymentMethodDelete = async (idToDelete) => {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/paymentMethods/${bookUuid}/${idToDelete}`,
+      config
+    );
+    return response.data;
+  };
+  const paymentMethodDeleteMutation = useMutation({
+    mutationFn: (idToDelete) => paymentMethodDelete(idToDelete),
+    onSuccess: (data) => {
+      navigate(0); //refresh
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
+  useEffect(() => {
+    mutation.mutate();
+    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+    paymentMethodGetMutation.mutate();
+  }, []);
+
+  useEffect(() => {
+    mutation.mutate();
+    paymentMethodGetMutation.mutate();
+  }, [bookUuid]);
+
+  useEffect(() => {
+    setMajorCategory(bookName);
+  }, [bookName]);
+  useEffect(() => {
+    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+  }, [books]);
+  return (
+    <div style={{ height: '100%' }}>
+      <div
+        className="flex-1"
+        style={{
+          maxHeight: '100%',
+          display: 'grid',
+          gridGap: '12px',
+          gridTemplateColumns: '1fr 1fr',
+          height: '100%',
+        }}
+      >
+        <div className="flex-1" style={{ minHeight: 0 }}>
+          <div
+            style={{
+              display: 'grid',
+              gridGap: '16px',
+              gridTemplateRows: '1fr 1fr',
+              height: '100%',
+            }}
+          >
+            <Panel>
+              <div className="flex-col" style={{ gap: '12px' }}>
+                <Title>카테고리 및 예산 설정</Title>
+                <SettingsTable
+                  categories={categories}
+                  setCategories={setCategories}
+                  isModalOpen={isModalOpen}
+                  setIsModalOpen={setIsModalOpen}
+                  newCategory={newCategory}
+                  setNewCategory={setNewCategory}
+                  handleInputChange={handleInputChange}
+                  handleDeleteCategory={handleDeleteCategory}
+                />
+              </div>
+            </Panel>
+            <Panel>
+              <div className="flex-col" style={{ gap: '12px' }}>
+                <Title>멤버 설정</Title>
+              </div>
+            </Panel>
+          </div>
+        </div>
+        <div className="flex-1" style={{ minHeight: 0 }}>
+          <div className="flex-col" style={{ gap: '16px', height: '100%' }}>
+            <Panel>
+              <div className="flex-col" style={{ gap: '12px' }}>
+                <Title>가계부 설정</Title>
+                <div className="flex-col">
+                  <TextboxLabel>가계부 이름</TextboxLabel>
+                  <Textbox
+                    type="text"
+                    value={bookName}
+                    setText={setBookName}
+                    onKeyDown={() => {}}
+                  />
+                </div>
+
+                <div className="flex-col" style={{ gap: '8px' }}>
+                  <Button variant="contained" onClick={handleChangeBookName}>
+                    저장
+                  </Button>
+                  <Button
+                    variant="text"
+                    style={{ color: 'red' }}
+                    onClick={handleDeleteBook}
+                  >
+                    가계부 삭제
+                  </Button>
+                </div>
+              </div>
+            </Panel>
+            <Panel className="flex-1">
+              <div className="flex-col" style={{ gap: '12px' }}>
+                <Title>결제 수단 설정</Title>
+                {paymentMethods.map((elem) => {
+                  return (
+                    <PaymentMethodIndividual
+                      _id={elem._id}
+                      onDelete={() =>
+                        paymentMethodDeleteMutation.mutate(elem._id)
+                      }
+                    >
+                      {elem.name}
+                    </PaymentMethodIndividual>
+                  );
+                })}
+                <div
+                  className="flex-row gap-6px pointer"
+                  onClick={() => {
+                    setIsPaymentMethodAddModalOpen(true);
+                  }}
+                >
+                  <AddIcon />
+                  <div className="medium">결제 수단 추가</div>
+                </div>
+              </div>
+            </Panel>
+          </div>
+        </div>
+      </div>
       <Modal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
@@ -245,6 +423,33 @@ export const Settings = ({}) => {
             추가
           </Button>
           <Button variant="text" onClick={() => setIsModalOpen(false)}>
+            취소
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isPaymentMethodAddModalOpen}
+        setIsOpen={setIsPaymentMethodAddModalOpen}
+        title="결제 수단 추가"
+      >
+        <div className="flex-col modal-content flex-1">
+          <div>
+            <TextboxLabel>결제 수단 이름</TextboxLabel>
+            <Textbox
+              type="text"
+              name="name"
+              value={newPaymentMethodName}
+              setText={setNewPaymentMethodName}
+              onKeyDown={() => {}}
+            />
+          </div>
+          <Button variant="contained" onClick={handleAddPaymentMethod}>
+            추가
+          </Button>
+          <Button
+            variant="text"
+            onClick={() => setIsPaymentMethodAddModalOpen(false)}
+          >
             취소
           </Button>
         </div>

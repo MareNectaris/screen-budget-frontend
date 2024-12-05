@@ -31,7 +31,10 @@ export const Dashboard = () => {
   const [newTransactionName, setNewTransactionName] = useState('');
   const [newCategoryUuid, setNewCategoryUuid] = useState(null);
   const [newAmount, setNewAmount] = useState('');
-  const [newPaymentMethodUuid, setNewPaymentMethodUuid] = useState(null);
+  const [bookName, setBookName] = useState('');
+  const { setMajorCategory, setMinorCategory, books, setBooks } =
+    useOutletContext();
+
   const handleRadioChange = (val) => {
     setSelectedRadio(val);
   };
@@ -112,12 +115,20 @@ export const Dashboard = () => {
   }, [today]);
 
   useEffect(() => {
+    setMajorCategory(bookName);
+  }, [bookName]);
+  useEffect(() => {
     mutation.mutate({});
+    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
   }, []);
 
-  const { setMajorCategory, setMinorCategory } = useOutletContext();
   useEffect(() => {
-    setMajorCategory('개인 가계부');
+    mutation.mutate({});
+  }, [bookUuid]);
+  useEffect(() => {
+    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+  }, [books]);
+  useEffect(() => {
     setMinorCategory('대시보드');
   }, []);
   return (

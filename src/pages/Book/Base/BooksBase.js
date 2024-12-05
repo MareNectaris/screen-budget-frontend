@@ -51,9 +51,11 @@ export const BooksBase = () => {
 
   useEffect(() => {
     mutation.mutate();
-    console.log(location.pathname);
   }, []);
 
+  useEffect(() => {
+    mutation.mutate();
+  }, [bookUuid]);
   useEffect(() => {
     console.log(books);
   }, [books]);
@@ -172,7 +174,14 @@ export const BooksBase = () => {
           <NavbarCurrent>{minorCategory}</NavbarCurrent>
         </Navbar>
 
-        <Outlet context={{ setMajorCategory, setMinorCategory }} />
+        <Outlet
+          context={{
+            setMajorCategory,
+            setMinorCategory,
+            books,
+            setBooks,
+          }}
+        />
       </div>
     </div>
   );
