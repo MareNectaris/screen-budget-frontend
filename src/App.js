@@ -1,3 +1,4 @@
+import { TableView } from '@mui/icons-material';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { useRecoilState } from 'recoil';
 import './App.css';
@@ -9,8 +10,11 @@ import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
 import { BooksBase } from './pages/Book/Base/BooksBase';
 import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
+import { FinanceSchedule } from './pages/Book/individual/FinanceSchedule/FinanceSchedule';
 import { NewsList } from './pages/Book/individual/News/News';
 import { Settings } from './pages/Book/individual/Settings/Settings';
+import { Stats } from './pages/Book/individual/Stats/Stats';
+import { TimelineAndCalendar } from './pages/Book/individual/TimelineAndCalendar/TimelineAndCalendar';
 import { Main } from './pages/Book/Main/Main';
 import { Loading } from './pages/Loading/Loading';
 import { TestPage } from './pages/Test/TestPage';
@@ -49,6 +53,10 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="news" element={<NewsList />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="calendar" element={<TimelineAndCalendar />} />
+            <Route path="table" element={<TableView />} />
+            <Route path="schedules" element={<FinanceSchedule />} />
+            <Route path="statistics" element={<Stats />} />
           </Route>
           <Route path="/news" element={<BooksBase />}>
             <Route index element={<NewsList />} />
