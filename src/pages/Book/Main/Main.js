@@ -48,7 +48,7 @@ export const Main = () => {
 
   //TEMP FOR DEBUG ONLY
   useEffect(() => {
-    navigate('/books/674ef0a881a73adc0d1c4c1d');
+    navigate('/books/6751682c5102af593dc9902d');
   }, []);
 
   return <div className="App"></div>;
