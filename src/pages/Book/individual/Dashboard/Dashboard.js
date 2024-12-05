@@ -195,10 +195,10 @@ export const Dashboard = () => {
             <div className="flex-col">
               {today.transactions?.map((transaction) => {
                 const categoryObj = categories?.find(
-                  (p) => p._id === transaction.categoryUuid
+                  (p) => p._id === transaction.categoryId
                 );
                 const paymentMethodObj = paymentMethods?.find(
-                  (p) => p._id === transaction.paymentMethodUuid
+                  (p) => p._id === transaction.paymentMethodId
                 );
                 return (
                   <ScheduleIndividual
