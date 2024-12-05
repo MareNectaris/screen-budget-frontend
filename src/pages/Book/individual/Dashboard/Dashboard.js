@@ -16,7 +16,16 @@ import { ScheduleIndividual } from '../../../../components/ScheduleIndividual/Sc
 import { TextboxLabel, Title } from '../../../../components/Text/Text';
 import { Textbox } from '../../../../components/Textbox/Textbox';
 import { authState } from '../../../../store/Auth';
+
 export const Dashboard = () => {
+  const getKSTDate = (date) => {
+    const kstOffset = 9 * 60 * 60 * 1000;
+    const kstDate = new Date(date.getTime() + kstOffset);
+    const y = kstDate.getUTCFullYear();
+    const m = (kstDate.getUTCMonth() + 1).toString().padStart(2, '0');
+    const d = kstDate.getUTCDate().toString().padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
   const { bookUuid } = useParams();
   const navigate = useNavigate();
   const [auth, setAuth] = useRecoilState(authState);
@@ -28,10 +37,11 @@ export const Dashboard = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRadio, setSelectedRadio] = useState();
-  const [newTransactionName, setNewTransactionName] = useState('');
-  const [newCategoryUuid, setNewCategoryUuid] = useState(null);
-  const [newAmount, setNewAmount] = useState('');
   const [bookName, setBookName] = useState('');
+  const [newTransactionName, setNewTransactionName] = useState('');
+  const [newCategoryId, setNewCategoryId] = useState(null);
+  const [newPaymentMethodId, setNewPaymentMethodId] = useState(null);
+  const [newAmount, setNewAmount] = useState('');
   const { setMajorCategory, setMinorCategory, books, setBooks } =
     useOutletContext();
 
@@ -110,7 +120,36 @@ export const Dashboard = () => {
     onMutate: () => {},
   });
 
-  const handleAddRecord = () => {};
+  const newTransactionPost = async (record) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}`,
+      record,
+      config
+    );
+    return response.data;
+  };
+  const newTransactionPostMutation = useMutation({
+    mutationFn: (record) => newTransactionPost(record),
+    onSuccess: (data) => {
+      navigate(0);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
+  const handleAddRecord = () => {
+    const date = new Date();
+    const newRecord = {
+      categoryId: newCategoryId,
+      paymentMethodId: newPaymentMethodId,
+      name: newTransactionName,
+      amount: newAmount,
+      type: selectedRadio,
+      date: getKSTDate(date),
+    };
+    newTransactionPostMutation.mutate(newRecord);
+  };
 
   useEffect(() => {
     calculateTodayExpensesAndIncome();
@@ -276,10 +315,17 @@ export const Dashboard = () => {
 
             <div className="flex-col">
               <TextboxLabel>카테고리</TextboxLabel>
-              <select className="select">
+              <select
+                className="select"
+                value={newCategoryId || ''}
+                onChange={(e) => setNewCategoryId(e.target.value)}
+              >
+                <option value="" disabled>
+                  카테고리 선택
+                </option>
                 {categories?.map((elem) => {
                   return (
-                    <option value={elem.uuid} style={{ color: elem.color }}>
+                    <option value={elem._id} style={{ color: elem.color }}>
                       {elem?.name}
                     </option>
                   );
@@ -297,9 +343,16 @@ export const Dashboard = () => {
             </div>
             <div className="flex-col">
               <TextboxLabel>결제 수단</TextboxLabel>
-              <select className="select">
+              <select
+                className="select"
+                value={newPaymentMethodId || ''}
+                onChange={(e) => setNewPaymentMethodId(e.target.value)}
+              >
+                <option value="" disabled>
+                  결제 수단 선택
+                </option>
                 {paymentMethods?.map((elem) => {
-                  return <option value={elem.uuid}>{elem?.name}</option>;
+                  return <option value={elem._id}>{elem?.name}</option>;
                 })}
               </select>
             </div>
