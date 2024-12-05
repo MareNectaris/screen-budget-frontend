@@ -1,24 +1,26 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Button } from '../../../../components/Button/Button';
 import { Modal } from '../../../../components/Modal/Modal';
 import { Panel } from '../../../../components/Panel/Panel';
 import SettingsTable from '../../../../components/Settings/Settings';
-import { TextboxLabel } from '../../../../components/Text/Text';
+import { TextboxLabel, Title } from '../../../../components/Text/Text';
+import { Textbox } from '../../../../components/Textbox/Textbox';
 import { authState } from '../../../../store/Auth';
-export const Settings = ({ props, children }) => {
-  // const [categories, setCategories] = useState([
-  //   { id: 1, name: '구독비', daily: 30000, monthly: 900000, color: 'blue' },
-  //   { id: 2, name: '식비', daily: 10000, monthly: 300000, color: 'green' },
-  //   { id: 3, name: '교통비', daily: 1000, monthly: 30000, color: 'brown' },
-  // ]);
+export const Settings = ({}) => {
+  const { setMajorCategory, setMinorCategory } = useOutletContext();
+  useEffect(() => {
+    setMajorCategory('개인 가계부');
+    setMinorCategory('가계부 설정');
+  }, []);
   const [auth, setAuth] = useRecoilState(authState);
   const { bookUuid } = useParams();
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookName, setBookName] = useState('');
   const [newCategory, setNewCategory] = useState({
     name: '',
     color: '',
@@ -28,7 +30,6 @@ export const Settings = ({ props, children }) => {
   const config = {
     headers: { Authorization: `${auth}` },
   };
-
   const categoryPost = async (data) => {
     const response = await axios.get(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${bookUuid}`,
@@ -154,17 +155,18 @@ export const Settings = ({ props, children }) => {
     deleteMutation.mutate(id);
   };
   return (
-    <div className="flex-col flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
+    <div className="flex-row flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
       <div className="flex-1" style={{ minHeight: 0 }}>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
             gridGap: '16px',
+            gridTemplateRows: '1fr 1fr',
             height: '100%',
           }}
         >
           <Panel>
+            <Title>카테고리 설정</Title>
             <SettingsTable
               categories={categories}
               setCategories={setCategories}
@@ -180,15 +182,19 @@ export const Settings = ({ props, children }) => {
         </div>
       </div>
       <div className="flex-1" style={{ minHeight: 0 }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gridGap: '16px',
-            height: '100%',
-          }}
-        >
-          <Panel></Panel>
+        <div className="flex-col" style={{ gap: '16px' }}>
+          <Panel>
+            <Title>가계부 설정</Title>
+            <div className="flex-col">
+              <TextboxLabel>가계부 이름</TextboxLabel>
+              <Textbox
+                type="text"
+                value={bookName}
+                setText={setBookName}
+                onKeyDown={() => {}}
+              />
+            </div>
+          </Panel>
           <Panel></Panel>
         </div>
       </div>
