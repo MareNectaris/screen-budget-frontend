@@ -10,9 +10,10 @@ export const Calendar = ({
   setSelectedMonthOnly,
   selectedYear,
   setSelectedYear,
+  selectedDate,
+  setSelectedDate,
 }) => {
   const today = new Date();
-  const [selectedDate, setSelectedDate] = useState(today);
   const [selectedMonth, setSelectedMonth] = useState(
     new Date(today.getFullYear(), today.getMonth(), 1)
   );
