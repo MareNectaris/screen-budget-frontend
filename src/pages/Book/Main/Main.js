@@ -41,8 +41,14 @@ export const Main = () => {
     },
   });
 
+  //FOR PRODUCTION
+  // useEffect(() => {
+  //   mutation.mutate({});
+  // }, []);
+
+  //TEMP FOR DEBUG ONLY
   useEffect(() => {
-    mutation.mutate({});
+    navigate('/books/674ef0a881a73adc0d1c4c1d');
   }, []);
 
   return <div className="App"></div>;
