@@ -33,10 +33,11 @@
 }
 
 .add-category-btn {
-  margin-top: 10px;
-  padding: 10px;
-  background: #007bff;
-  color: white;
+  padding-top: 10px;
+  background: none;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 700;
+  text-align: start;
   border: none;
   cursor: pointer;
 }

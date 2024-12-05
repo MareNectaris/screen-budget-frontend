@@ -42,9 +42,15 @@ export const SettingsTable = ({
           ))}
         </tbody>
       </table>
-      <button className="add-category-btn" onClick={() => setIsModalOpen(true)}>
-        + 카테고리 추가
-      </button>
+      <div className="flex-1">
+        <button
+          className="add-category-btn"
+          style={{ width: '100%' }}
+          onClick={() => setIsModalOpen(true)}
+        >
+          + 카테고리 추가
+        </button>
+      </div>
     </div>
   );
 };
