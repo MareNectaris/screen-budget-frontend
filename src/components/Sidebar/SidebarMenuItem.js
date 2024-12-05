@@ -31,7 +31,7 @@ export const SidebarMenuItemPrimary = ({
       >
         {expandable && expanded ? (
           <ExpandLessIcon />
-        ) : expanded === false ? (
+        ) : expandable && expanded === false ? (
           <ExpandMoreIcon />
         ) : null}
         {type === 'newspaper' ? (
