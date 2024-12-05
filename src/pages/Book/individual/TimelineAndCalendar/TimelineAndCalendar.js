@@ -2,14 +2,19 @@ import { useMutation } from '@tanstack/react-query';
 import { floorAndFormatNumber } from '@toss/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Calendar } from '../../../../components/Calendar/Calendar';
 import { Line } from '../../../../components/Line/Line';
 import { Panel } from '../../../../components/Panel/Panel';
+import { ScheduleIndividual } from '../../../../components/ScheduleIndividual/ScheduleIndividual';
 import { TextboxLabel, Title } from '../../../../components/Text/Text';
 import { authState } from '../../../../store/Auth';
 export const TimelineAndCalendar = () => {
+  const { setMajorCategory, setMinorCategory, books, setBooks } =
+    useOutletContext();
+  const [bookName, setBookName] = useState('');
+
   const { bookUuid } = useParams();
   const getKSTDate = (date) => {
     const kstOffset = 9 * 60 * 60 * 1000;
@@ -83,6 +88,16 @@ export const TimelineAndCalendar = () => {
       month: selectedMonth,
     });
   }, [selectedYear, selectedMonth]);
+  useEffect(() => {
+    setMajorCategory(bookName);
+  }, [bookName]);
+  useEffect(() => {
+    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+    setMinorCategory('캘린더 및 타임라인');
+  }, []);
+  useEffect(() => {
+    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+  }, [books]);
   return (
     <div
       className="flex-col flex-1"
@@ -142,6 +157,31 @@ export const TimelineAndCalendar = () => {
               <div className="flex-col">
                 <TextboxLabel>타임라인</TextboxLabel>
                 <Line />
+                <div className="flex-col">
+                  {transactionsOnSelectedDate.transactions?.map(
+                    (transaction) => {
+                      const categoryObj =
+                        transactionsOnSelectedDate.categories?.find(
+                          (p) => p._id === transaction.categoryId
+                        );
+                      const paymentMethodObj =
+                        transactionsOnSelectedDate.paymentMethods?.find(
+                          (p) => p._id === transaction.paymentMethodId
+                        );
+                      return (
+                        <ScheduleIndividual
+                          paymentLocation={transaction?.name}
+                          category={categoryObj?.name}
+                          color={categoryObj?.color}
+                          paymentMethod={paymentMethodObj?.name}
+                          transactionType={transaction.type}
+                          amount={transaction.amount}
+                          _id={transaction._id}
+                        />
+                      );
+                    }
+                  )}
+                </div>
               </div>
             </div>
           </Panel>
