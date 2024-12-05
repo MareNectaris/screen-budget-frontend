@@ -50,6 +50,9 @@ function App() {
             <Route path="news" element={<NewsList />} />
             <Route path="settings" element={<Settings />} />
           </Route>
+          <Route path="/news" element={<BooksBase />}>
+            <Route index element={<NewsList />} />
+          </Route>
         </Routes>
       ) : (
         <Routes>

@@ -159,6 +159,12 @@ export const BooksBase = () => {
               </SidebarMenuItemPrimary>
             );
           })}
+          <SidebarMenuItemPrimary
+            expandable={false}
+            type="newspaper"
+            text="뉴스"
+            onClick={() => navigate('/news')}
+          />
         </Sidebar>
       )}
       <div
@@ -169,8 +175,12 @@ export const BooksBase = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         >
-          <NavbarDirectory>{majorCategory}</NavbarDirectory>
-          <NavbarDirectory>/</NavbarDirectory>
+          {majorCategory && (
+            <div className="flex-row" style={{ gap: '12px' }}>
+              <NavbarDirectory>{majorCategory}</NavbarDirectory>
+              <NavbarDirectory>/</NavbarDirectory>
+            </div>
+          )}
           <NavbarCurrent>{minorCategory}</NavbarCurrent>
         </Navbar>
 
