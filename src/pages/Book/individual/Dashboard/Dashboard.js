@@ -110,6 +110,8 @@ export const Dashboard = () => {
     onMutate: () => {},
   });
 
+  const handleAddRecord = () => {};
+
   useEffect(() => {
     calculateTodayExpensesAndIncome();
   }, [today]);
@@ -120,6 +122,7 @@ export const Dashboard = () => {
   useEffect(() => {
     mutation.mutate({});
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+    setMinorCategory('대시보드');
   }, []);
 
   useEffect(() => {
@@ -128,9 +131,6 @@ export const Dashboard = () => {
   useEffect(() => {
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
   }, [books]);
-  useEffect(() => {
-    setMinorCategory('대시보드');
-  }, []);
   return (
     <div className="flex-col flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
       <div className="flex-row">
@@ -241,69 +241,82 @@ export const Dashboard = () => {
       </div>
       <FAB onClick={() => setIsModalOpen(!isModalOpen)} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
-        <div className="flex-col" style={{ gap: '12px' }}>
-          <div className="flex-col">
-            <TextboxLabel>분류</TextboxLabel>
-            <div className="flex-row gap-6px">
-              <Radio
-                name="category"
-                value="expense"
-                checked={selectedRadio === 'expense'}
-                handleChange={handleRadioChange}
-              >
-                지출
-              </Radio>
-              <Radio
-                name="category"
-                value="income"
-                checked={selectedRadio === 'income'}
-                handleChange={handleRadioChange}
-              >
-                수입
-              </Radio>
+        {categories.length > 0 && paymentMethods.length > 0 ? (
+          <div className="flex-col" style={{ gap: '12px' }}>
+            <div className="flex-col">
+              <TextboxLabel>분류</TextboxLabel>
+              <div className="flex-row gap-6px">
+                <Radio
+                  name="category"
+                  value="expense"
+                  checked={selectedRadio === 'expense'}
+                  handleChange={handleRadioChange}
+                >
+                  지출
+                </Radio>
+                <Radio
+                  name="category"
+                  value="income"
+                  checked={selectedRadio === 'income'}
+                  handleChange={handleRadioChange}
+                >
+                  수입
+                </Radio>
+              </div>
+            </div>
+            <div className="flex-col">
+              <TextboxLabel>거래처</TextboxLabel>
+              <Textbox
+                type="text"
+                value={newTransactionName}
+                setText={setNewTransactionName}
+                onKeyDown={() => {}}
+              />
+            </div>
+
+            <div className="flex-col">
+              <TextboxLabel>카테고리</TextboxLabel>
+              <select className="select">
+                {categories?.map((elem) => {
+                  return (
+                    <option value={elem.uuid} style={{ color: elem.color }}>
+                      {elem?.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="flex-col">
+              <TextboxLabel>금액</TextboxLabel>
+              <Textbox
+                type="number"
+                value={newAmount}
+                setText={setNewAmount}
+                onKeyDown={() => {}}
+              />
+            </div>
+            <div className="flex-col">
+              <TextboxLabel>결제 수단</TextboxLabel>
+              <select className="select">
+                {paymentMethods?.map((elem) => {
+                  return <option value={elem.uuid}>{elem?.name}</option>;
+                })}
+              </select>
+            </div>
+            <Button variant="contained" onClick={() => handleAddRecord()}>
+              기록 추가
+            </Button>
+          </div>
+        ) : (
+          <div className="flex-col flex-center gap-6px">
+            카테고리 또는 결제 수단 중 하나 이상이 설정되어 있지 않습니다.
+            <br />
+            <div className="flex-row">
+              <Link to="settings">가계부 설정</Link>으로 이동하여 카테고리와
+              결제 수단 모두가 설정되어 있는지 확인해 주세요.
             </div>
           </div>
-          <div className="flex-col">
-            <TextboxLabel>거래처</TextboxLabel>
-            <Textbox
-              type="text"
-              value={newTransactionName}
-              setText={setNewTransactionName}
-              onKeyDown={() => {}}
-            />
-          </div>
-
-          <div className="flex-col">
-            <TextboxLabel>카테고리</TextboxLabel>
-            <select className="select">
-              {categories?.map((elem) => {
-                return (
-                  <option value={elem.uuid} style={{ color: elem.color }}>
-                    {elem?.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div className="flex-col">
-            <TextboxLabel>금액</TextboxLabel>
-            <Textbox
-              type="number"
-              value={newAmount}
-              setText={setNewAmount}
-              onKeyDown={() => {}}
-            />
-          </div>
-          <div className="flex-col">
-            <TextboxLabel>결제 수단</TextboxLabel>
-            <select className="select">
-              {paymentMethods?.map((elem) => {
-                return <option value={elem.uuid}>{elem?.name}</option>;
-              })}
-            </select>
-          </div>
-          <Button variant="contained">기록 추가</Button>
-        </div>
+        )}
       </Modal>
     </div>
   );
