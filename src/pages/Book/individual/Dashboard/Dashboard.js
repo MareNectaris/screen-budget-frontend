@@ -119,7 +119,7 @@ export const Dashboard = () => {
   useEffect(() => {
     setMajorCategory('개인 가계부');
     setMinorCategory('대시보드');
-  });
+  }, []);
   return (
     <div className="flex-col flex-1" style={{ gap: '12px', maxHeight: '100%' }}>
       <div className="flex-row">

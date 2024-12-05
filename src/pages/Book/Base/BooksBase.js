@@ -1,7 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router';
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router';
 import { useRecoilValue } from 'recoil';
 import { Navbar } from '../../../components/Navbar/Navbar';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
@@ -14,6 +20,7 @@ import { authState } from '../../../store/Auth';
 export const BooksBase = () => {
   const navigate = useNavigate();
   const { bookUuid } = useParams();
+  const location = useLocation();
   const { hash, pathname, search } = useLocation();
   const auth = useRecoilValue(authState);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -44,23 +51,112 @@ export const BooksBase = () => {
 
   useEffect(() => {
     mutation.mutate();
+    console.log(location.pathname);
   }, []);
+
+  useEffect(() => {
+    console.log(books);
+  }, [books]);
   return (
     <div className="App">
       {isSidebarOpen && (
         <Sidebar setIsSidebarOpen={setIsSidebarOpen}>
-          <SidebarMenuItemPrimary expandable="true" text="개인 가계부">
-            <SidebarMenuItemSecondary highlighted>
-              대시보드
-            </SidebarMenuItemSecondary>
-            <SidebarMenuItemSecondary>
-              타임라인 및 캘린더
-            </SidebarMenuItemSecondary>
-            <SidebarMenuItemSecondary>테이블</SidebarMenuItemSecondary>
-            <SidebarMenuItemSecondary>금융 일정</SidebarMenuItemSecondary>
-            <SidebarMenuItemSecondary>통계 보기</SidebarMenuItemSecondary>
-            <SidebarMenuItemSecondary>가계부 설정</SidebarMenuItemSecondary>
-          </SidebarMenuItemPrimary>
+          {books?.map((elem) => {
+            return (
+              <SidebarMenuItemPrimary
+                expandable="true"
+                text={elem.name}
+                key={`${elem._id}Primary`}
+              >
+                <Link
+                  to={`/books/${elem._id}`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  key={`${elem._id}Dashboard`}
+                >
+                  <SidebarMenuItemSecondary
+                    highlighted={
+                      elem._id == bookUuid &&
+                      location.pathname == `/books/${elem._id}`
+                    }
+                  >
+                    대시보드
+                  </SidebarMenuItemSecondary>
+                </Link>
+                <Link
+                  to={`/books/${elem._id}/calendar`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  key={`${elem._id}calendar`}
+                >
+                  <SidebarMenuItemSecondary
+                    highlighted={
+                      elem._id == bookUuid &&
+                      location.pathname == `/books/${elem._id}/calendar`
+                    }
+                  >
+                    타임라인 및 캘린더
+                  </SidebarMenuItemSecondary>
+                </Link>
+                <Link
+                  to={`/books/${elem._id}/table`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  key={`${elem._id}table`}
+                >
+                  <SidebarMenuItemSecondary
+                    highlighted={
+                      elem._id == bookUuid &&
+                      location.pathname == `/books/${elem._id}/table`
+                    }
+                    key={`${elem._id}table`}
+                  >
+                    테이블
+                  </SidebarMenuItemSecondary>
+                </Link>
+                <Link
+                  to={`/books/${elem._id}/schedules`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  key={`${elem._id}schedules`}
+                >
+                  <SidebarMenuItemSecondary
+                    highlighted={
+                      elem._id == bookUuid &&
+                      location.pathname == `/books/${elem._id}/schedules`
+                    }
+                  >
+                    금융 일정
+                  </SidebarMenuItemSecondary>
+                </Link>
+                <Link
+                  to={`/books/${elem._id}/statistics`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  key={`${elem._id}statistics`}
+                >
+                  <SidebarMenuItemSecondary
+                    highlighted={
+                      elem._id == bookUuid &&
+                      location.pathname == `/books/${elem._id}/statistics`
+                    }
+                  >
+                    통계 보기
+                  </SidebarMenuItemSecondary>
+                </Link>
+                <Link
+                  to={`/books/${elem._id}/settings`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  key={`${elem._id}settings`}
+                >
+                  <SidebarMenuItemSecondary
+                    highlighted={
+                      elem._id == bookUuid &&
+                      location.pathname == `/books/${elem._id}/settings`
+                    }
+                    key={`${elem._id}settings`}
+                  >
+                    가계부 설정
+                  </SidebarMenuItemSecondary>
+                </Link>
+              </SidebarMenuItemPrimary>
+            );
+          })}
         </Sidebar>
       )}
       <div
