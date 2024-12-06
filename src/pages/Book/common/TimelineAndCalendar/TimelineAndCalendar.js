@@ -193,6 +193,26 @@ export const TimelineAndCalendar = () => {
       type: selectedRadioModify,
     });
   };
+
+  const transactionDelete = async (record) => {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/${selectedSchedule}`,
+      config
+    );
+    return response.data;
+  };
+  const transactionDeleteMutation = useMutation({
+    mutationFn: transactionDelete,
+    onSuccess: (data) => {
+      navigate(0);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+  const handleDeleteRecord = () => {
+    transactionDeleteMutation.mutate();
+  };
   useEffect(() => {
     setCategoriesFiltered(categories.filter((elem) => !elem.isDeleted));
   }, [categories]);
@@ -499,6 +519,13 @@ export const TimelineAndCalendar = () => {
             </div>
             <Button variant="contained" onClick={() => handleModifyRecord()}>
               기록 수정
+            </Button>
+            <Button
+              variant="text"
+              style={{ color: 'red' }}
+              onClick={() => handleDeleteRecord()}
+            >
+              기록 삭제
             </Button>
           </div>
         ) : (
