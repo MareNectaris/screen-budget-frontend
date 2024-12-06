@@ -1,10 +1,14 @@
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { floorAndFormatNumber } from '@toss/utils';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../CategoryChip/CategoryChip';
 import { TableDate, Title } from '../Text/Text';
+import { Textbox } from '../Textbox/Textbox';
 import './Table.css';
 
 export const Table = ({
@@ -16,8 +20,15 @@ export const Table = ({
   paymentMethodsFiltered,
   categoriesFiltered,
   deleteTransaction,
+  handleAddRecord,
 }) => {
+  const navigate = useNavigate();
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [transactionType, setTransactionType] = useState('');
+  const [newPaymentMethodId, setNewPaymentMethodId] = useState(null);
+  const [newTransactionName, setNewTransactionName] = useState('');
+  const [newCategoryId, setNewCategoryId] = useState(null);
+  const [newAmount, setNewAmount] = useState('');
   const handleMonthChange = (pointer) => {
     const newMonth = new Date(
       selectedMonth.getFullYear(),
@@ -26,7 +37,7 @@ export const Table = ({
     );
     setSelectedMonth(newMonth);
   };
-  let idx = 1;
+
   return (
     <div className="flex-col" style={{ gap: '12px' }}>
       <div className="flex-row" style={{ gap: '12px' }}>
@@ -47,6 +58,7 @@ export const Table = ({
         </button>
       </div>
       {monthlyTransactions.map((day) => {
+        let idx = 1;
         const sum = day.totalIncome - day.totalExpense;
         if (day.transactions.length > 0)
           return (
@@ -104,15 +116,114 @@ export const Table = ({
                         </tr>
                       );
                     })}
-                    <div
-                      className="flex-row gap-6px pointer"
-                      onClick={() => {
-                        setIsAddOpen(true);
-                      }}
-                    >
-                      <AddIcon />
-                      <div className="medium">기록 추가</div>
-                    </div>
+                    {isAddOpen[day.date] ? (
+                      <tr>
+                        <td>{idx}</td>
+                        <td>
+                          <select
+                            className="select"
+                            value={transactionType || ''}
+                            onChange={(e) => setTransactionType(e.target.value)}
+                          >
+                            <option value="income">수입</option>;
+                            <option value="expense">지출</option>;
+                          </select>
+                        </td>
+                        <td>
+                          <select
+                            className="select"
+                            value={newCategoryId || ''}
+                            onChange={(e) => setNewCategoryId(e.target.value)}
+                          >
+                            <option value="" disabled>
+                              카테고리 선택
+                            </option>
+                            {categoriesFiltered?.map((elem) => {
+                              if (!elem.isDeleted)
+                                return (
+                                  <option
+                                    value={elem._id}
+                                    style={{ color: elem.color }}
+                                  >
+                                    {elem?.name}
+                                  </option>
+                                );
+                            })}
+                          </select>
+                        </td>
+                        <td>
+                          <select
+                            className="select"
+                            value={newPaymentMethodId || ''}
+                            onChange={(e) =>
+                              setNewPaymentMethodId(e.target.value)
+                            }
+                          >
+                            <option value="" disabled>
+                              결제 수단 선택
+                            </option>
+                            {paymentMethodsFiltered?.map((elem) => {
+                              if (!elem.isDeleted)
+                                return (
+                                  <option value={elem._id}>{elem?.name}</option>
+                                );
+                            })}
+                          </select>
+                        </td>
+                        <td>
+                          <Textbox
+                            type="text"
+                            value={newTransactionName}
+                            setText={setNewTransactionName}
+                            onKeyDown={() => {}}
+                          ></Textbox>
+                        </td>
+                        <td>
+                          <Textbox
+                            type="number"
+                            value={newAmount}
+                            setText={setNewAmount}
+                            onKeyDown={() => {}}
+                          />
+                        </td>
+                        <td>
+                          <CheckIcon
+                            className="pointer"
+                            onClick={() => {
+                              const newRecord = {
+                                categoryId: newCategoryId,
+                                paymentMethodId: newPaymentMethodId,
+                                name: newTransactionName,
+                                amount: newAmount,
+                                type: transactionType,
+                                date: day.date,
+                              };
+                              handleAddRecord(newRecord);
+                            }}
+                          />
+                          <CloseIcon
+                            className="pointer"
+                            onClick={() => {
+                              let _new = { ...isAddOpen };
+                              _new[day.date] = false;
+                              setIsAddOpen(_new);
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    ) : (
+                      <div
+                        className="flex-row gap-6px pointer"
+                        onClick={() => {
+                          let _new = { ...isAddOpen };
+                          _new[day.date] = true;
+                          setIsAddOpen(_new);
+                        }}
+                      >
+                        <AddIcon />
+                        <div className="medium">기록 추가</div>
+                      </div>
+                    )}
                   </tbody>
                 </table>
               </div>
