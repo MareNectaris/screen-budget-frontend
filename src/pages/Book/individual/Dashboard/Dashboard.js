@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { Button } from '../../../../components/Button/Button';
+import { CircularProgressWithLabel } from '../../../../components/CircularProgressWithLabel/CircularProgressWithLabel';
 import { FAB } from '../../../../components/FAB/FAB';
 import { Line } from '../../../../components/Line/Line';
 import { Modal } from '../../../../components/Modal/Modal';
@@ -44,6 +45,20 @@ export const Dashboard = () => {
   const [newCategoryId, setNewCategoryId] = useState(null);
   const [newPaymentMethodId, setNewPaymentMethodId] = useState(null);
   const [newAmount, setNewAmount] = useState('');
+  const [spendings, setSpendings] = useState({
+    daily: {
+      dailyBudget: 0,
+      dailySpent: 0,
+    },
+    monthly: {
+      monthlyBudget: 0,
+      monthlySpent: 0,
+    },
+  });
+  const [relativeSpendings, setRelativeSpendings] = useState({
+    monthly: 0,
+    daily: 0,
+  });
   const { setMajorCategory, setMinorCategory, books, setBooks } =
     useOutletContext();
 
@@ -68,7 +83,39 @@ export const Dashboard = () => {
   const config = {
     headers: { Authorization: `${auth}` },
   };
+  const spendingsGet = async (data) => {
+    const requests = [
+      axios.get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/budgets/${bookUuid}/daily`,
+        config
+      ),
+      axios.get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/budgets/${bookUuid}/monthly`,
+        config
+      ),
+    ];
 
+    const responses = await Promise.all(requests);
+
+    return responses.map((res) => res.data);
+  };
+
+  const spendingsGetMutation = useMutation({
+    mutationFn: spendingsGet,
+    onSuccess: (dataArr) => {
+      const [_daily, _monthly] = dataArr;
+      if (_daily && _monthly) {
+        setSpendings({
+          daily: _daily,
+          monthly: _monthly,
+        });
+      }
+    },
+    onError: (error) => {
+      alert(error);
+    },
+    onMutate: () => {},
+  });
   const dashboardPost = async (data) => {
     const requests = [
       axios.get(
@@ -152,7 +199,16 @@ export const Dashboard = () => {
     };
     newTransactionPostMutation.mutate(newRecord);
   };
-
+  useEffect(() => {
+    setRelativeSpendings({
+      daily: Math.ceil(
+        (spendings.daily.dailySpent / spendings.daily.dailyBudget) * 100
+      ),
+      monthly: Math.ceil(
+        (spendings.monthly.monthlySpent / spendings.monthly.monthlyBudget) * 100
+      ),
+    });
+  }, [spendings]);
   useEffect(() => {
     setCategoriesFiltered(categories.filter((elem) => !elem.isDeleted));
   }, [categories]);
@@ -171,10 +227,12 @@ export const Dashboard = () => {
     mutation.mutate({});
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     setMinorCategory('대시보드');
+    spendingsGetMutation.mutate();
   }, []);
 
   useEffect(() => {
     mutation.mutate({});
+    spendingsGetMutation.mutate();
   }, [bookUuid]);
   useEffect(() => {
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
@@ -192,7 +250,10 @@ export const Dashboard = () => {
               paddingTop: '12px',
             }}
           >
-            <div className="flex-col" style={{ gap: '8px' }}>
+            <div
+              className="flex-col"
+              style={{ gap: '8px', justifyContent: 'space-evenly' }}
+            >
               <Link to="calendar" className="no-link-style">
                 <div className="flex-row flex-center pointer">
                   <div className="regular text-24px flex-1">이번 달 지출</div>
@@ -233,10 +294,35 @@ export const Dashboard = () => {
             </div>
             <div className="flex-col">
               <div className="flex-row flex-center pointer">
-                <div className="regular text-24px flex-1">이번 달 지출</div>
-                <div className="flex-row flex-center">
-                  <div className="bold text-36px">100,000원</div>
-                  <NavigateNextIcon />
+                <div
+                  className="flex-row flex-1"
+                  style={{
+                    height: '100%',
+                    gap: '24px',
+                    justifyContent: 'space-around',
+                    alignContent: 'center',
+                  }}
+                >
+                  <div className="flex-center flex-col" style={{ gap: '24px' }}>
+                    <Title>일일 목표 대비</Title>
+                    <CircularProgressWithLabel
+                      value={
+                        relativeSpendings.daily > 100
+                          ? 100
+                          : relativeSpendings.daily
+                      }
+                    />
+                  </div>
+                  <div className="flex-center flex-col" style={{ gap: '24px' }}>
+                    <Title>이번 달 예산 소진률</Title>
+                    <CircularProgressWithLabel
+                      value={
+                        relativeSpendings.monthly > 100
+                          ? 100
+                          : relativeSpendings.monthly
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             </div>
