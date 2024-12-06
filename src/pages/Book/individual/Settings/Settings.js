@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Button } from '../../../../components/Button/Button';
+import { MemberIndividual } from '../../../../components/MemberIndividual/MemberIndividual';
 import { Modal } from '../../../../components/Modal/Modal';
 import { Panel } from '../../../../components/Panel/Panel';
 import { PaymentMethodIndividual } from '../../../../components/PaymentMethodIndividual/PaymentMethodIndividual';
@@ -21,6 +22,7 @@ export const Settings = ({}) => {
   const navigate = useNavigate();
   const [auth, setAuth] = useRecoilState(authState);
   const { bookUuid } = useParams();
+  const [myId, setMyId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookName, setBookName] = useState('');
@@ -34,7 +36,11 @@ export const Settings = ({}) => {
   const [isPaymentMethodAddModalOpen, setIsPaymentMethodAddModalOpen] =
     useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
+  const [bookInfo, setBookInfo] = useState([]);
+  const [bookMemberInfo, setBookMemberInfo] = useState([]);
   const [newPaymentMethodName, setNewPaymentMethodName] = useState('');
+  const [newMemberEmail, setNewMemberEmail] = useState('');
+  const [isMemberAddModalOpen, setIsMemberAddModalOpen] = useState(false);
   const paymentMethodPost = async (data) => {
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/paymentMethods/${bookUuid}`,
@@ -116,6 +122,79 @@ export const Settings = ({}) => {
       setNewCategory({ ...newCategory, [name]: value });
     }
   };
+
+  const memberInfoGet = async (data) => {
+    const requests = [
+      axios.get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/${bookUuid}`,
+        config
+      ),
+      axios.get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/${bookUuid}/members`,
+        config
+      ),
+    ];
+
+    const responses = await Promise.all(requests);
+
+    return responses.map((res) => res.data);
+  };
+
+  const memberInfoGetMutation = useMutation({
+    mutationFn: memberInfoGet,
+    onSuccess: (dataArr) => {
+      const [_bookInfo, _bookMemberInfo] = dataArr;
+      if (_bookInfo?.data) {
+        setBookInfo(_bookInfo.data);
+      }
+      if (_bookMemberInfo?.data) {
+        setBookMemberInfo(_bookMemberInfo.data);
+      }
+    },
+    onError: (error) => {
+      if (
+        error.config.url ===
+          `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/${bookUuid}/members` &&
+        error.status === 400
+      )
+        setBookMemberInfo([]);
+      else alert(error);
+    },
+    onMutate: () => {},
+  });
+
+  const memberPut = async (idToModify) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks/${bookUuid}`,
+      {
+        members: idToModify,
+      },
+      config
+    );
+    return response.data;
+  };
+  const memberPutMutation = useMutation({
+    mutationFn: (idToModify) => memberPut(idToModify),
+    onSuccess: (data, idToModify) => {
+      navigate(0);
+    },
+
+    onError: (error) => {
+      alert(error);
+    },
+    onMutate: () => {},
+  });
+
+  const handleAddMember = () => {
+    memberPutMutation.mutate([
+      {
+        action: 'add',
+        memberId: newMemberEmail,
+      },
+    ]);
+    setNewPaymentMethodName('');
+  };
+
   const categoryAdd = async (objToAdd) => {
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/categories/${bookUuid}`,
@@ -261,16 +340,34 @@ export const Settings = ({}) => {
       alert(error);
     },
   });
+  //TODO fetch memberId
+  const profileGet = async (record) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/members/profile`,
+      record,
+      config
+    );
+    return response.data;
+  };
+  const profileGetMutation = useMutation({
+    mutationFn: profileGet,
+    onSuccess: (data) => {},
+    onError: (error) => {
+      alert(error);
+    },
+  });
 
   useEffect(() => {
     mutation.mutate();
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     paymentMethodGetMutation.mutate();
+    memberInfoGetMutation.mutate();
   }, []);
 
   useEffect(() => {
     mutation.mutate();
     paymentMethodGetMutation.mutate();
+    memberInfoGetMutation.mutate();
   }, [bookUuid]);
 
   useEffect(() => {
@@ -318,6 +415,33 @@ export const Settings = ({}) => {
             <Panel>
               <div className="flex-col" style={{ gap: '12px' }}>
                 <Title>멤버 설정</Title>
+                {bookInfo?.members?.map((elem) => {
+                  //TODO compare with fetched memberId and exclude me
+                  return (
+                    <MemberIndividual
+                      _id={elem.id}
+                      onDelete={() =>
+                        memberPutMutation.mutate([
+                          {
+                            action: 'delete',
+                            memberId: elem.id,
+                          },
+                        ])
+                      }
+                    >
+                      {elem.email}
+                    </MemberIndividual>
+                  );
+                })}
+                <div
+                  className="flex-row gap-6px pointer"
+                  onClick={() => {
+                    setIsMemberAddModalOpen(true);
+                  }}
+                >
+                  <AddIcon />
+                  <div className="medium">멤버 추가</div>
+                </div>
               </div>
             </Panel>
           </div>
@@ -453,6 +577,30 @@ export const Settings = ({}) => {
             variant="text"
             onClick={() => setIsPaymentMethodAddModalOpen(false)}
           >
+            취소
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isMemberAddModalOpen}
+        setIsOpen={setIsMemberAddModalOpen}
+        title="멤버 추가"
+      >
+        <div className="flex-col modal-content flex-1">
+          <div>
+            <TextboxLabel>멤버 이메일</TextboxLabel>
+            <Textbox
+              type="text"
+              name="name"
+              value={newMemberEmail}
+              setText={setNewMemberEmail}
+              onKeyDown={() => {}}
+            />
+          </div>
+          <Button variant="contained" onClick={handleAddMember}>
+            추가
+          </Button>
+          <Button variant="text" onClick={() => setIsMemberAddModalOpen(false)}>
             취소
           </Button>
         </div>
