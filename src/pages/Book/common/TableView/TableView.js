@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Panel } from '../../../../components/Panel/Panel';
-import { Title } from '../../../../components/Text/Text';
+import { Table } from '../../../../components/Table/Table';
 import { authState } from '../../../../store/Auth';
 export const TableView = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export const TableView = () => {
       style={{ gap: '12px', maxHeight: '100%', width: '100%' }}
     >
       <Panel className="flex-1">
-        <Title>2024년 12월</Title>
+        <Table />
       </Panel>
     </div>
   );
