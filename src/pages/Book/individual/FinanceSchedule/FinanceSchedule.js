@@ -69,10 +69,12 @@ export const FinanceSchedule = () => {
     onSuccess: (dataArr) => {
       const [_categories, _paymentMethods] = dataArr;
       if (_categories?.data) {
-        setCategories(_categories.data);
+        setCategories(_categories.data.filter((elem) => !elem.isDeleted));
       }
       if (_paymentMethods?.data) {
-        setPaymentMethods(_paymentMethods.data);
+        setPaymentMethods(
+          _paymentMethods.data.filter((elem) => !elem.isDeleted)
+        );
       }
     },
     onError: (error) => {

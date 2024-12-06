@@ -77,9 +77,9 @@ export const TimelineAndCalendar = () => {
     setSelectedRadioModify(selected.type);
 
     setModifyTransactionName(selected.name);
-    setModifyCategoryId(selected.categoryId);
+    //setModifyCategoryId(selected.categoryId);
     setModifyAmount(selected.amount);
-    setModifyPaymentMethodId(selected.paymentMethodId);
+    //setModifyPaymentMethodId(selected.paymentMethodId);
     setIsScheduleModalOpen(true);
   };
   const perMonthPost = async (yearAndMonth) => {
@@ -184,8 +184,12 @@ export const TimelineAndCalendar = () => {
       type: selectedRadioModify,
     });
   };
-  useEffect(() => {}, [paymentMethods]);
-  useEffect(() => {}, [categories]);
+  useEffect(() => {
+    setCategoriesFiltered(categories.filter((elem) => !elem.isDeleted));
+  }, [categories]);
+  useEffect(() => {
+    setPaymentMethodsFiltered(paymentMethods.filter((elem) => !elem.isDeleted));
+  }, [paymentMethods]);
   useEffect(() => {
     perDateMutation.mutate({
       date: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${('0' + selectedDate.getDate()).slice(-2)}`,
@@ -301,7 +305,7 @@ export const TimelineAndCalendar = () => {
 
       <FAB onClick={() => setIsModalOpen(!isModalOpen)} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
-        {categories.length > 0 && paymentMethods.length > 0 ? (
+        {categoriesFiltered.length > 0 && paymentMethodsFiltered.length > 0 ? (
           <div className="flex-col" style={{ gap: '12px' }}>
             <div className="flex-col">
               <TextboxLabel>분류</TextboxLabel>
@@ -344,7 +348,7 @@ export const TimelineAndCalendar = () => {
                 <option value="" disabled>
                   카테고리 선택
                 </option>
-                {categories?.map((elem) => {
+                {categoriesFiltered?.map((elem) => {
                   return (
                     <option value={elem._id} style={{ color: elem.color }}>
                       {elem?.name}
@@ -372,7 +376,7 @@ export const TimelineAndCalendar = () => {
                 <option value="" disabled>
                   결제 수단 선택
                 </option>
-                {paymentMethods?.map((elem) => {
+                {paymentMethodsFiltered?.map((elem) => {
                   return <option value={elem._id}>{elem?.name}</option>;
                 })}
               </select>
@@ -397,7 +401,7 @@ export const TimelineAndCalendar = () => {
         setIsOpen={setIsScheduleModalOpen}
         title="기록 수정"
       >
-        {categories.length > 0 && paymentMethods.length > 0 ? (
+        {categoriesFiltered.length > 0 && paymentMethodsFiltered.length > 0 ? (
           <div className="flex-col" style={{ gap: '12px' }}>
             <div className="flex-col">
               <TextboxLabel>분류</TextboxLabel>
@@ -440,13 +444,12 @@ export const TimelineAndCalendar = () => {
                 <option value="" disabled>
                   카테고리 선택
                 </option>
-                {categories?.map((elem) => {
-                  if (elem.isDeleted)
-                    return (
-                      <option value={elem._id} style={{ color: elem.color }}>
-                        {elem?.name}
-                      </option>
-                    );
+                {categoriesFiltered?.map((elem) => {
+                  return (
+                    <option value={elem._id} style={{ color: elem.color }}>
+                      {elem?.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -469,7 +472,7 @@ export const TimelineAndCalendar = () => {
                 <option value="" disabled>
                   결제 수단 선택
                 </option>
-                {paymentMethods?.map((elem) => {
+                {paymentMethodsFiltered?.map((elem) => {
                   return <option value={elem._id}>{elem?.name}</option>;
                 })}
               </select>

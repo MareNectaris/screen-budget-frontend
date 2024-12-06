@@ -34,6 +34,8 @@ export const Dashboard = () => {
   const [todayStats, setTodayStats] = useState({ expense: 0, income: 0 });
   const [economyNews, setEconomyNews] = useState({ hankyung: [], mk: [] });
   const [categories, setCategories] = useState([]);
+  const [categoriesFiltered, setCategoriesFiltered] = useState([]);
+  const [paymentMethodsFiltered, setPaymentMethodsFiltered] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRadio, setSelectedRadio] = useState();
@@ -108,12 +110,10 @@ export const Dashboard = () => {
         setEconomyNews(_economyNews.data);
       }
       if (_categories?.data) {
-        setCategories(_categories.data.filter((elem) => !elem.isDeleted));
+        setCategories(_categories.data);
       }
       if (_paymentMethods?.data) {
-        setPaymentMethods(
-          _paymentMethods.data.filter((elem) => !elem.isDeleted)
-        );
+        setPaymentMethods(_paymentMethods.data);
       }
     },
     onError: (error) => {
@@ -152,6 +152,13 @@ export const Dashboard = () => {
     };
     newTransactionPostMutation.mutate(newRecord);
   };
+
+  useEffect(() => {
+    setCategoriesFiltered(categories.filter((elem) => !elem.isDeleted));
+  }, [categories]);
+  useEffect(() => {
+    setPaymentMethodsFiltered(paymentMethods.filter((elem) => !elem.isDeleted));
+  }, [paymentMethods]);
 
   useEffect(() => {
     calculateTodayExpensesAndIncome();
@@ -289,7 +296,7 @@ export const Dashboard = () => {
       </div>
       <FAB onClick={() => setIsModalOpen(!isModalOpen)} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
-        {categories.length > 0 && paymentMethods.length > 0 ? (
+        {categoriesFiltered.length > 0 && paymentMethodsFiltered.length > 0 ? (
           <div className="flex-col" style={{ gap: '12px' }}>
             <div className="flex-col">
               <TextboxLabel>분류</TextboxLabel>
@@ -332,7 +339,7 @@ export const Dashboard = () => {
                 <option value="" disabled>
                   카테고리 선택
                 </option>
-                {categories?.map((elem) => {
+                {categoriesFiltered?.map((elem) => {
                   if (!elem.isDeleted)
                     return (
                       <option value={elem._id} style={{ color: elem.color }}>
@@ -361,7 +368,7 @@ export const Dashboard = () => {
                 <option value="" disabled>
                   결제 수단 선택
                 </option>
-                {paymentMethods?.map((elem) => {
+                {paymentMethodsFiltered?.map((elem) => {
                   if (!elem.isDeleted)
                     return <option value={elem._id}>{elem?.name}</option>;
                 })}
