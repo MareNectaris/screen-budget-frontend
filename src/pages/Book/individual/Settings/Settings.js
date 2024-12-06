@@ -22,7 +22,7 @@ export const Settings = ({}) => {
   const navigate = useNavigate();
   const [auth, setAuth] = useRecoilState(authState);
   const { bookUuid } = useParams();
-  const [myId, setMyId] = useState(null);
+  const [myId, setMyId] = useState({});
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookName, setBookName] = useState('');
@@ -186,10 +186,15 @@ export const Settings = ({}) => {
   });
 
   const handleAddMember = () => {
+    if (myId.email === newMemberEmail) {
+      alert('자신의 이메일은 입력할 수 없습니다.');
+      return;
+    }
     memberPutMutation.mutate([
       {
         action: 'add',
-        memberId: newMemberEmail,
+        email: newMemberEmail,
+        role: 'editor',
       },
     ]);
     setNewPaymentMethodName('');
@@ -340,18 +345,18 @@ export const Settings = ({}) => {
       alert(error);
     },
   });
-  //TODO fetch memberId
   const profileGet = async (record) => {
     const response = await axios.get(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/members/profile`,
-      record,
       config
     );
     return response.data;
   };
   const profileGetMutation = useMutation({
     mutationFn: profileGet,
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      if (data) setMyId(data);
+    },
     onError: (error) => {
       alert(error);
     },
@@ -362,12 +367,14 @@ export const Settings = ({}) => {
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     paymentMethodGetMutation.mutate();
     memberInfoGetMutation.mutate();
+    profileGetMutation.mutate();
   }, []);
 
   useEffect(() => {
     mutation.mutate();
     paymentMethodGetMutation.mutate();
     memberInfoGetMutation.mutate();
+    profileGetMutation.mutate();
   }, [bookUuid]);
 
   useEffect(() => {
@@ -393,7 +400,7 @@ export const Settings = ({}) => {
             style={{
               display: 'grid',
               gridGap: '16px',
-              gridTemplateRows: '1fr 1fr',
+              gridTemplateRows: bookInfo?.type === 'group' ? '1fr 1fr' : '1fr',
               height: '100%',
             }}
           >
@@ -412,38 +419,40 @@ export const Settings = ({}) => {
                 />
               </div>
             </Panel>
-            <Panel>
-              <div className="flex-col" style={{ gap: '12px' }}>
-                <Title>멤버 설정</Title>
-                {bookInfo?.members?.map((elem) => {
-                  //TODO compare with fetched memberId and exclude me
-                  return (
-                    <MemberIndividual
-                      _id={elem.id}
-                      onDelete={() =>
-                        memberPutMutation.mutate([
-                          {
-                            action: 'delete',
-                            memberId: elem.id,
-                          },
-                        ])
-                      }
-                    >
-                      {elem.email}
-                    </MemberIndividual>
-                  );
-                })}
-                <div
-                  className="flex-row gap-6px pointer"
-                  onClick={() => {
-                    setIsMemberAddModalOpen(true);
-                  }}
-                >
-                  <AddIcon />
-                  <div className="medium">멤버 추가</div>
+            {bookInfo?.type === 'group' && (
+              <Panel>
+                <div className="flex-col" style={{ gap: '12px' }}>
+                  <Title>멤버 설정</Title>
+                  {bookInfo?.members?.map((elem) => {
+                    return (
+                      <MemberIndividual
+                        _id={elem.id}
+                        onDelete={() =>
+                          memberPutMutation.mutate([
+                            {
+                              action: 'delete',
+                              memberId: elem.id,
+                            },
+                          ])
+                        }
+                        me={elem.id === myId._id}
+                      >
+                        {elem.email}
+                      </MemberIndividual>
+                    );
+                  })}
+                  <div
+                    className="flex-row gap-6px pointer"
+                    onClick={() => {
+                      setIsMemberAddModalOpen(true);
+                    }}
+                  >
+                    <AddIcon />
+                    <div className="medium">멤버 추가</div>
+                  </div>
                 </div>
-              </div>
-            </Panel>
+              </Panel>
+            )}
           </div>
         </div>
         <div className="flex-1" style={{ minHeight: 0 }}>

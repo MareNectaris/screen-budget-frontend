@@ -293,7 +293,10 @@ export const Dashboard = () => {
               </Link>
             </div>
             <div className="flex-col">
-              <div className="flex-row flex-center pointer">
+              <div
+                className="flex-row flex-center pointer"
+                onClick={() => navigate('statistics')}
+              >
                 <div
                   className="flex-row flex-1"
                   style={{
