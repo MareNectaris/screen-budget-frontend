@@ -164,7 +164,10 @@ export const FinanceSchedule = () => {
               if (day.length > 0) {
                 return (
                   <div className="flex-row gap-6px" key={day}>
-                    <div className="text-20px medium">
+                    <div
+                      className="text-20px medium"
+                      style={{ minWidth: '50px', textAlign: 'end' }}
+                    >
                       {day[0].dateInfo.day}일
                     </div>
                     <div className="flex-col flex-1">
