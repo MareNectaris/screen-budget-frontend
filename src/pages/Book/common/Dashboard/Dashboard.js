@@ -45,6 +45,7 @@ export const Dashboard = () => {
   const [newCategoryId, setNewCategoryId] = useState(null);
   const [newPaymentMethodId, setNewPaymentMethodId] = useState(null);
   const [newAmount, setNewAmount] = useState('');
+  const [newDate, setNewDate] = useState(getKSTDate(new Date()));
   const [spendings, setSpendings] = useState({
     daily: {
       dailyBudget: 0,
@@ -188,14 +189,13 @@ export const Dashboard = () => {
   });
 
   const handleAddRecord = () => {
-    const date = new Date();
     const newRecord = {
       categoryId: newCategoryId,
       paymentMethodId: newPaymentMethodId,
       name: newTransactionName,
       amount: newAmount,
       type: selectedRadio,
-      date: getKSTDate(date),
+      date: newDate,
     };
     newTransactionPostMutation.mutate(newRecord);
   };
@@ -388,6 +388,14 @@ export const Dashboard = () => {
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
         {categoriesFiltered.length > 0 && paymentMethodsFiltered.length > 0 ? (
           <div className="flex-col" style={{ gap: '12px' }}>
+            <div className="flex-col">
+              <TextboxLabel>날짜</TextboxLabel>
+              <input
+                type="date"
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+              />
+            </div>
             <div className="flex-col">
               <TextboxLabel>분류</TextboxLabel>
               <div className="flex-row gap-6px">

@@ -8,6 +8,13 @@ export const Title = ({ children, style, className }) => {
   );
 };
 
+export const TableDate = ({ children, style, className }) => {
+  return (
+    <div className={`table-date ${className}`} style={style}>
+      {children}
+    </div>
+  );
+};
 export const NavbarCurrent = ({ children, style, className }) => {
   return (
     <div className={`navbar-text nav-bold ${className}`} style={style}>

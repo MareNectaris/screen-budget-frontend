@@ -57,6 +57,15 @@ export const TimelineAndCalendar = () => {
     const d = kstDate.getUTCDate();
     return [y, m, d];
   };
+  const getKSTDateString = (date) => {
+    const kstOffset = 9 * 60 * 60 * 1000;
+    const kstDate = new Date(date.getTime() + kstOffset);
+    const y = kstDate.getUTCFullYear();
+    const m = kstDate.getUTCMonth() + 1;
+    const d = kstDate.getUTCDate();
+    return `${y}-${m}-${d}`;
+  };
+  const [newDate, setNewDate] = useState(getKSTDateString(new Date()));
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedYear, setSelectedYear] = useState(getKSTDate(new Date())[0]);
   const [selectedMonth, setSelectedMonth] = useState(getKSTDate(new Date())[1]);
@@ -151,7 +160,7 @@ export const TimelineAndCalendar = () => {
       name: newTransactionName,
       amount: newAmount,
       type: selectedRadio,
-      date: getKSTDate(date),
+      date: newDate,
     };
     newTransactionPostMutation.mutate(newRecord);
   };
@@ -310,6 +319,14 @@ export const TimelineAndCalendar = () => {
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">
         {categoriesFiltered.length > 0 && paymentMethodsFiltered.length > 0 ? (
           <div className="flex-col" style={{ gap: '12px' }}>
+            <div className="flex-col">
+              <TextboxLabel>날짜</TextboxLabel>
+              <input
+                type="date"
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+              />
+            </div>
             <div className="flex-col">
               <TextboxLabel>분류</TextboxLabel>
               <div className="flex-row gap-6px">
