@@ -8,13 +8,13 @@ import { Login } from './pages/Auth/Login/Login';
 import { Logout } from './pages/Auth/Logout/Logout';
 import { Register } from './pages/Auth/Register/Register';
 import { BooksBase } from './pages/Book/Base/BooksBase';
-import { Dashboard } from './pages/Book/individual/Dashboard/Dashboard';
-import { FinanceSchedule } from './pages/Book/individual/FinanceSchedule/FinanceSchedule';
-import { NewsList } from './pages/Book/individual/News/News';
-import { Settings } from './pages/Book/individual/Settings/Settings';
-import { Stats } from './pages/Book/individual/Stats/Stats';
-import { TableView } from './pages/Book/individual/TableView/TableView';
-import { TimelineAndCalendar } from './pages/Book/individual/TimelineAndCalendar/TimelineAndCalendar';
+import { Dashboard } from './pages/Book/common/Dashboard/Dashboard';
+import { FinanceSchedule } from './pages/Book/common/FinanceSchedule/FinanceSchedule';
+import { NewsList } from './pages/Book/common/News/News';
+import { Settings } from './pages/Book/common/Settings/Settings';
+import { Stats } from './pages/Book/common/Stats/Stats';
+import { TableView } from './pages/Book/common/TableView/TableView';
+import { TimelineAndCalendar } from './pages/Book/common/TimelineAndCalendar/TimelineAndCalendar';
 import { Main } from './pages/Book/Main/Main';
 import {
   firstTimeSetupRequiredState,
