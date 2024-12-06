@@ -82,6 +82,9 @@ html,
 .text-24px {
   font-size: 24px;
 }
+.text-20px {
+  font-size: 20px;
+}
 
 .pointer {
   cursor: pointer;
@@ -96,4 +99,9 @@ html,
   border-right: none;
   background: #fff;
   outline: none;
+}
+
+.no-link-style {
+  color: #000;
+  text-decoration: none;
 }
