@@ -8,10 +8,11 @@
 thead tr,
 tbody tr {
   display: grid;
-  grid-template-columns: 1fr 2fr 4fr 5fr 8fr 4fr 10fr;
+  grid-template-columns: 1fr 2fr 4fr 5fr 8fr 4fr 1fr;
 }
 .table th,
 .table td {
+  font-size: 20px;
   text-align: center;
   padding: 8px 12px;
   border: 1px solid #ddd;
