@@ -205,6 +205,9 @@ export const TimelineAndCalendar = () => {
     setMajorCategory(bookName);
   }, [bookName]);
   useEffect(() => {
+    perDateMutation.mutate({
+      date: getKSTDate(new Date()),
+    });
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     setMinorCategory('캘린더 및 타임라인');
   }, []);
