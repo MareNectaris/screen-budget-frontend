@@ -150,8 +150,8 @@ export const Dashboard = () => {
       if (_monthly?.data) {
         setMonthly(_monthly.data);
       }
-      if (_today?.message) {
-        setToday(_today.message);
+      if (_today?.data) {
+        setToday(_today.data);
       }
       if (_economyNews?.data) {
         setEconomyNews(_economyNews.data);
@@ -259,7 +259,7 @@ export const Dashboard = () => {
                   <div className="regular text-24px flex-1">이번 달 지출</div>
                   <div className="flex-row flex-center">
                     <div className="bold text-36px">
-                      {floorAndFormatNumber(monthly.expense)}원
+                      {floorAndFormatNumber(spendings.monthly.monthlySpent)}원
                     </div>
                     <NavigateNextIcon />
                   </div>
@@ -285,7 +285,7 @@ export const Dashboard = () => {
                   </div>
                   <div className="flex-row flex-center">
                     <div className="bold text-32px">
-                      {today.schedules.length}건
+                      {today.schedules?.length || 0}건
                     </div>
                     <NavigateNextIcon />
                   </div>
@@ -351,6 +351,7 @@ export const Dashboard = () => {
                 const paymentMethodObj = paymentMethods?.find(
                   (p) => p._id === transaction.paymentMethodId
                 );
+                console.log('transaction ', transaction);
                 return (
                   <ScheduleIndividual
                     paymentLocation={transaction?.name}
