@@ -108,10 +108,12 @@ export const Dashboard = () => {
         setEconomyNews(_economyNews.data);
       }
       if (_categories?.data) {
-        setCategories(_categories.data);
+        setCategories(_categories.data.filter((elem) => !elem.isDeleted));
       }
       if (_paymentMethods?.data) {
-        setPaymentMethods(_paymentMethods.data);
+        setPaymentMethods(
+          _paymentMethods.data.filter((elem) => !elem.isDeleted)
+        );
       }
     },
     onError: (error) => {
@@ -331,11 +333,12 @@ export const Dashboard = () => {
                   카테고리 선택
                 </option>
                 {categories?.map((elem) => {
-                  return (
-                    <option value={elem._id} style={{ color: elem.color }}>
-                      {elem?.name}
-                    </option>
-                  );
+                  if (!elem.isDeleted)
+                    return (
+                      <option value={elem._id} style={{ color: elem.color }}>
+                        {elem?.name}
+                      </option>
+                    );
                 })}
               </select>
             </div>
@@ -359,7 +362,8 @@ export const Dashboard = () => {
                   결제 수단 선택
                 </option>
                 {paymentMethods?.map((elem) => {
-                  return <option value={elem._id}>{elem?.name}</option>;
+                  if (!elem.isDeleted)
+                    return <option value={elem._id}>{elem?.name}</option>;
                 })}
               </select>
             </div>

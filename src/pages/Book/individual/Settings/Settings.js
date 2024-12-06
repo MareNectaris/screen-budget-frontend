@@ -238,7 +238,8 @@ export const Settings = ({}) => {
   const paymentMethodGetMutation = useMutation({
     mutationFn: paymentMethodGet,
     onSuccess: (data) => {
-      if (data?.data) setPaymentMethods(data.data);
+      if (data?.data)
+        setPaymentMethods(data.data.filter((elem) => !elem.isDeleted));
     },
     onError: (error) => {
       alert(error);
