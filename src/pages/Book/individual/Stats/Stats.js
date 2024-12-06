@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { CircularProgressWithLabel } from '../../../../components/CircularProgressWithLabel/CircularProgressWithLabel';
 import { Panel } from '../../../../components/Panel/Panel';
 import { Title } from '../../../../components/Text/Text';
 import { authState } from '../../../../store/Auth';
@@ -29,6 +30,10 @@ export const Stats = () => {
       monthlyBudget: 0,
       monthlySpent: 0,
     },
+  });
+  const [relativeSpendings, setRelativeSpendings] = useState({
+    monthly: 0,
+    daily: 0,
   });
 
   const { bookUuid } = useParams();
@@ -128,6 +133,16 @@ export const Stats = () => {
     },
     onMutate: () => {},
   });
+  useEffect(() => {
+    setRelativeSpendings({
+      daily: Math.ceil(
+        (spendings.daily.dailySpent / spendings.daily.dailyBudget) * 100
+      ),
+      monthly: Math.ceil(
+        (spendings.monthly.monthlySpent / spendings.monthly.monthlyBudget) * 100
+      ),
+    });
+  }, [spendings]);
 
   useEffect(() => {
     setBudgetFilteredPerCategory(
@@ -188,14 +203,53 @@ export const Stats = () => {
         }}
       >
         <Panel>
-          <div className="flex-col">
+          <div className="flex-col flex-1 ">
             <Title>지출 목표 대비 소비</Title>
+            <div className="flex-center flex-1">
+              <div
+                className="flex-row flex-1"
+                style={{
+                  height: '100%',
+                  gap: '24px',
+                  justifyContent: 'space-around',
+                  alignContent: 'center',
+                }}
+              >
+                <div className="flex-center flex-col" style={{ gap: '24px' }}>
+                  <Title>일일 목표 대비</Title>
+                  <CircularProgressWithLabel
+                    value={
+                      relativeSpendings.daily > 100
+                        ? 100
+                        : relativeSpendings.daily
+                    }
+                  />
+                </div>
+                <div className="flex-center flex-col" style={{ gap: '24px' }}>
+                  <Title>이번 달 예산 소진률</Title>
+                  <CircularProgressWithLabel
+                    value={
+                      relativeSpendings.monthly > 100
+                        ? 100
+                        : relativeSpendings.monthly
+                    }
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </Panel>
         <Panel>
-          <div className="flex-col">
+          <div className="flex-col flex-1">
             <Title>예산 분배 현황</Title>
-            <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <PieChart
                 series={[{ data: [...budgetFilteredPerCategory] }]}
                 height={400}
@@ -207,9 +261,16 @@ export const Stats = () => {
       </div>
       <div style={{ maxHeight: '100%' }}>
         <Panel style={{ height: '100%' }}>
-          <div className="flex-col">
+          <div className="flex-col flex-1">
             <Title>카테고리별 분석</Title>
-            <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <PieChart
                 series={[{ data: [...spendingsFilteredPerCategory] }]}
                 height={500}
