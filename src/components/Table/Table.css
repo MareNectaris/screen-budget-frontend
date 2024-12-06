@@ -1,17 +1,17 @@
-.table-container {
+.table-view-container {
   overflow-x: auto;
 }
-.table {
+.table-view {
   width: 100%;
   border-collapse: collapse;
 }
-thead tr,
-tbody tr {
+.table-view-head tr,
+.table-view-body tr {
   display: grid;
   grid-template-columns: 1fr 2fr 4fr 5fr 8fr 4fr 1fr;
 }
-.table th,
-.table td {
+.table-view th,
+.table-view td {
   font-size: 20px;
   text-align: center;
   padding: 8px 12px;
@@ -20,15 +20,15 @@ tbody tr {
   justify-content: center;
 }
 
-.table th {
+.table-view th {
   background-color: #f4f4f4;
   font-weight: bold;
 }
 
-.table tr:nth-child(even) {
+.table-view tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.table tr:hover {
+.table-view tr:hover {
   background-color: #f1f1f1;
 }
