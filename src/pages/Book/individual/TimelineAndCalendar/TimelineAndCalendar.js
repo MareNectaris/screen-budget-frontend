@@ -40,10 +40,6 @@ export const TimelineAndCalendar = () => {
   const [modifyAmount, setModifyAmount] = useState('');
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
-  const handleScheduleOpen = (key) => {
-    setSelectedSchedule(key);
-    setIsScheduleModalOpen(true);
-  };
   const handleRadioChange = (val) => {
     setSelectedRadio(val);
   };
@@ -70,6 +66,19 @@ export const TimelineAndCalendar = () => {
   const auth = useRecoilValue(authState);
   const config = {
     headers: { Authorization: `${auth}` },
+  };
+  const handleScheduleOpen = (key) => {
+    setSelectedSchedule(key);
+    const selected = transactionsOnSelectedDate.transactions?.find(
+      (o) => o._id === key
+    );
+    setSelectedRadioModify(selected.type);
+
+    setModifyTransactionName(selected.name);
+    setModifyCategoryId(selected.categoryId);
+    setModifyAmount(selected.amount);
+    setModifyPaymentMethodId(selected.paymentMethodId);
+    setIsScheduleModalOpen(true);
   };
   const perMonthPost = async (yearAndMonth) => {
     const response = await axios.post(
