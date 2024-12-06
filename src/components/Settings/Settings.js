@@ -23,23 +23,26 @@ export const SettingsTable = ({
           </tr>
         </thead>
         <tbody>
-          {categories.map((category) => (
-            <tr key={category.id}>
-              <td style={{ backgroundColor: category.color }}>
-                {category.name}
-              </td>
-              <td>{category.daily.toLocaleString()}원</td>
-              <td>{category.monthly.toLocaleString()}원</td>
-              <td>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDeleteCategory(category.id)}
-                >
-                  ×
-                </button>
-              </td>
-            </tr>
-          ))}
+          {categories.map((category) => {
+            if (!category.isDeleted)
+              return (
+                <tr key={category.id}>
+                  <td style={{ backgroundColor: category.color }}>
+                    {category.name}
+                  </td>
+                  <td>{category.daily.toLocaleString()}원</td>
+                  <td>{category.monthly.toLocaleString()}원</td>
+                  <td>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeleteCategory(category.id)}
+                    >
+                      ×
+                    </button>
+                  </td>
+                </tr>
+              );
+          })}
         </tbody>
       </table>
       <div className="flex-1">

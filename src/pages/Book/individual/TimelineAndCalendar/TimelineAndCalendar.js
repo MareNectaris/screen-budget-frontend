@@ -28,6 +28,8 @@ export const TimelineAndCalendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
+  const [categoriesFiltered, setCategoriesFiltered] = useState([]);
+  const [paymentMethodsFiltered, setPaymentMethodsFiltered] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState();
   const [selectedRadioModify, setSelectedRadioModify] = useState();
   const [newTransactionName, setNewTransactionName] = useState('');
@@ -182,6 +184,8 @@ export const TimelineAndCalendar = () => {
       type: selectedRadioModify,
     });
   };
+  useEffect(() => {}, [paymentMethods]);
+  useEffect(() => {}, [categories]);
   useEffect(() => {
     perDateMutation.mutate({
       date: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${('0' + selectedDate.getDate()).slice(-2)}`,
@@ -437,11 +441,12 @@ export const TimelineAndCalendar = () => {
                   카테고리 선택
                 </option>
                 {categories?.map((elem) => {
-                  return (
-                    <option value={elem._id} style={{ color: elem.color }}>
-                      {elem?.name}
-                    </option>
-                  );
+                  if (elem.isDeleted)
+                    return (
+                      <option value={elem._id} style={{ color: elem.color }}>
+                        {elem?.name}
+                      </option>
+                    );
                 })}
               </select>
             </div>
