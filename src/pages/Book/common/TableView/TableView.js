@@ -141,6 +141,27 @@ export const TableView = () => {
     setSelectedSchedule(key);
     transactionDeleteMutation.mutate();
   };
+
+  const newTransactionPost = async (record) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}`,
+      record,
+      config
+    );
+    return response.data;
+  };
+  const newTransactionPostMutation = useMutation({
+    mutationFn: (record) => newTransactionPost(record),
+    onSuccess: (data) => {
+      navigate(0);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+  const handleAddRecord = (newRecord) => {
+    newTransactionPostMutation.mutate(newRecord);
+  };
   return (
     <div
       className="flex-col flex-1"
@@ -156,6 +177,7 @@ export const TableView = () => {
           paymentMethodsFiltered={paymentMethodsFiltered}
           categoriesFiltered={categoriesFiltered}
           deleteTransaction={deleteTransaction}
+          handleAddRecord={handleAddRecord}
         />
       </Panel>
     </div>

@@ -16,6 +16,8 @@ tbody tr {
   text-align: center;
   padding: 8px 12px;
   border: 1px solid #ddd;
+  align-content: center;
+  justify-content: center;
 }
 
 .table th {
