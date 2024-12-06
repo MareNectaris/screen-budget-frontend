@@ -69,6 +69,10 @@ export const BooksBase = () => {
     },
   });
   const handleCreateBook = () => {
+    if (!selectedRadio || newBookName === '') {
+      alert('이름이 비어 있거나 분류가 선택되어 있지 않습니다.');
+      return;
+    }
     const body = {
       type: selectedRadio,
       name: newBookName,
