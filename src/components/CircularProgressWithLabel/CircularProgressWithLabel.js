@@ -56,7 +56,9 @@ export const CircularProgressWithLabel = (props) => {
           justifyContent: 'center',
         }}
       >
-        <Title style={{ color: color }}>{`${Math.round(props.value)}%`}</Title>
+        <Title style={{ color: color }}>
+          {Math.round(props.value) ? `${Math.round(props.value)}%` : '-'}
+        </Title>
       </Box>
     </Box>
   );
