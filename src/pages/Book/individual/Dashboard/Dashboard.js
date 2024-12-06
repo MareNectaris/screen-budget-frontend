@@ -184,37 +184,43 @@ export const Dashboard = () => {
             }}
           >
             <div className="flex-col" style={{ gap: '8px' }}>
-              <div className="flex-row flex-center pointer">
-                <div className="regular text-24px flex-1">이번 달 지출</div>
-                <div className="flex-row flex-center">
-                  <div className="bold text-36px">
-                    {floorAndFormatNumber(monthly.expense)}원
+              <Link to="calendar" className="no-link-style">
+                <div className="flex-row flex-center pointer">
+                  <div className="regular text-24px flex-1">이번 달 지출</div>
+                  <div className="flex-row flex-center">
+                    <div className="bold text-36px">
+                      {floorAndFormatNumber(monthly.expense)}원
+                    </div>
+                    <NavigateNextIcon />
                   </div>
-                  <NavigateNextIcon />
                 </div>
-              </div>
+              </Link>
               <Line />
-              <div className="flex-row flex-center pointer">
-                <div className="regular text-24px flex-1">오늘의 지출</div>
-                <div className="flex-row flex-center">
-                  <div className="bold text-32px">
-                    {floorAndFormatNumber(todayStats.expense)}원
+              <Link to="calendar" className="no-link-style">
+                <div className="flex-row flex-center pointer">
+                  <div className="regular text-24px flex-1">오늘의 지출</div>
+                  <div className="flex-row flex-center">
+                    <div className="bold text-32px">
+                      {floorAndFormatNumber(todayStats.expense)}원
+                    </div>
+                    <NavigateNextIcon />
                   </div>
-                  <NavigateNextIcon />
                 </div>
-              </div>
+              </Link>
               <Line />
-              <div
-                className={`flex-row flex-center ${today.schedules.length > 0 && 'pointer'}`}
-              >
-                <div className="regular text-24px flex-1">오늘의 금융 일정</div>
-                <div className="flex-row flex-center">
-                  <div className="bold text-32px">
-                    {today.schedules.length}건
+              <Link to="schedules" className="no-link-style">
+                <div className={`flex-row flex-center`}>
+                  <div className="regular text-24px flex-1">
+                    오늘의 금융 일정
                   </div>
-                  {today.schedules.length > 0 && <NavigateNextIcon />}
+                  <div className="flex-row flex-center">
+                    <div className="bold text-32px">
+                      {today.schedules.length}건
+                    </div>
+                    <NavigateNextIcon />
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="flex-col">
               <div className="flex-row flex-center pointer">
