@@ -70,9 +70,9 @@ export const Table = ({
                   {floorAndFormatNumber(sum)}원
                 </TableDate>
               </div>
-              <div className="table-container">
-                <table className="table">
-                  <thead>
+              <div className="table-view-container">
+                <table className="table-view">
+                  <thead className="table-view-head">
                     <tr>
                       <th>#</th>
                       <th>분류</th>
@@ -83,7 +83,7 @@ export const Table = ({
                       <th>삭제</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="table-view-body">
                     {day.transactions.map((transaction) => {
                       const categoryObj = categories?.find(
                         (p) => p._id === transaction.categoryId
