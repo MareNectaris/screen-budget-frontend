@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -9,28 +10,91 @@ import {
   useParams,
 } from 'react-router';
 import { useRecoilValue } from 'recoil';
+import { Button } from '../../../components/Button/Button';
+import { MemberIndividual } from '../../../components/MemberIndividual/MemberIndividual';
+import { Modal } from '../../../components/Modal/Modal';
 import { Navbar } from '../../../components/Navbar/Navbar';
+import { Radio } from '../../../components/Radio/Radio';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
 import {
   SidebarMenuItemPrimary,
   SidebarMenuItemSecondary,
 } from '../../../components/Sidebar/SidebarMenuItem';
-import { NavbarCurrent, NavbarDirectory } from '../../../components/Text/Text';
+import {
+  NavbarCurrent,
+  NavbarDirectory,
+  TextboxLabel,
+} from '../../../components/Text/Text';
+import { Textbox } from '../../../components/Textbox/Textbox';
 import { authState } from '../../../store/Auth';
 export const BooksBase = () => {
   const navigate = useNavigate();
   const { bookUuid } = useParams();
   const location = useLocation();
-  const { hash, pathname, search } = useLocation();
   const auth = useRecoilValue(authState);
+  const [myId, setMyId] = useState({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [majorCategory, setMajorCategory] = useState('');
   const [minorCategory, setMinorCategory] = useState('');
+  const [selectedRadio, setSelectedRadio] = useState();
+  const [newBookName, setNewBookName] = useState('');
+  const [newBookMembers, setNewBookMembers] = useState([]);
+  const [newMemberInputValue, setNewMemberInputValue] = useState('');
+  const [newMemberInputOpen, setNewMemberInputOpen] = useState(false);
+  const [isCreateNewBookModalOpen, setIsCreateNewBookModalOpen] =
+    useState(false);
   const [books, setBooks] = useState([]);
   const config = {
     headers: { Authorization: `${auth}` },
   };
+  const handleRadioChange = (val) => {
+    setSelectedRadio(val);
+  };
 
+  const bookPost = async (body) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks`,
+      body,
+      config
+    );
+    return response.data;
+  };
+  const bookPostMutation = useMutation({
+    mutationFn: (body) => bookPost(body),
+    onSuccess: (data) => {
+      navigate(0);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+  const handleCreateBook = () => {
+    const body = {
+      type: selectedRadio,
+      name: newBookName,
+      ...(selectedRadio === 'group' && {
+        memberEmailsInput: newBookMembers,
+      }),
+    };
+    bookPostMutation.mutate(body);
+  };
+
+  const profileGet = async (record) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/members/profile`,
+      config
+    );
+    return response.data;
+  };
+  const profileGetMutation = useMutation({
+    mutationFn: profileGet,
+    onSuccess: (data) => {
+      if (data) setMyId(data);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
   const booksPost = async (data) => {
     const response = await axios.get(
       `${process.env.REACT_APP_SERVER_ADDRESS}/api/accountBooks`,
@@ -51,6 +115,7 @@ export const BooksBase = () => {
 
   useEffect(() => {
     mutation.mutate();
+    profileGetMutation.mutate();
   }, []);
 
   useEffect(() => {
@@ -161,6 +226,12 @@ export const BooksBase = () => {
           })}
           <SidebarMenuItemPrimary
             expandable={false}
+            type="add"
+            text="새 가계부"
+            onClick={() => setIsCreateNewBookModalOpen(true)}
+          />
+          <SidebarMenuItemPrimary
+            expandable={false}
             type="newspaper"
             text="뉴스"
             onClick={() => navigate('/news')}
@@ -199,6 +270,104 @@ export const BooksBase = () => {
           }}
         />
       </div>
+      <Modal
+        isOpen={isCreateNewBookModalOpen}
+        setIsOpen={setIsCreateNewBookModalOpen}
+        title="새 가계부"
+      >
+        <div className="flex-col" style={{ gap: '12px' }}>
+          <div className="flex-col">
+            <TextboxLabel>분류</TextboxLabel>
+            <div className="flex-row gap-6px">
+              <Radio
+                name="type"
+                value="personal"
+                checked={selectedRadio === 'personal'}
+                handleChange={handleRadioChange}
+              >
+                개인
+              </Radio>
+              <Radio
+                name="type"
+                value="group"
+                checked={selectedRadio === 'group'}
+                handleChange={handleRadioChange}
+              >
+                그룹
+              </Radio>
+            </div>
+          </div>
+          <div className="flex-col" style={{ gap: '12px' }}>
+            <TextboxLabel>이름</TextboxLabel>
+            <Textbox
+              type="text"
+              value={newBookName}
+              setText={setNewBookName}
+              onKeyDown={() => {}}
+            />
+          </div>
+          {selectedRadio === 'group' && (
+            <div className="flex-col gap-6px">
+              <TextboxLabel>멤버 리스트</TextboxLabel>
+              <MemberIndividual _id="me" onDelete={() => {}} me={true}>
+                나
+              </MemberIndividual>
+              {newBookMembers.map((elem) => {
+                return (
+                  <MemberIndividual
+                    _id={elem}
+                    onDelete={() => {
+                      setNewBookMembers(
+                        newBookMembers.filter((e) => elem !== e)
+                      );
+                    }}
+                  >
+                    {elem}
+                  </MemberIndividual>
+                );
+              })}
+              {newMemberInputOpen ? (
+                <div className="flex-row">
+                  <Textbox
+                    type="text"
+                    value={newMemberInputValue}
+                    setText={setNewMemberInputValue}
+                    onKeyDown={() => {}}
+                    className="flex-1"
+                    placeholder="이메일 입력"
+                  />
+                  <Button
+                    variant="text"
+                    onClick={() => {
+                      setNewBookMembers([
+                        ...newBookMembers,
+                        newMemberInputValue,
+                      ]);
+                      setNewMemberInputOpen(false);
+                      setNewMemberInputValue('');
+                    }}
+                  >
+                    추가
+                  </Button>
+                </div>
+              ) : (
+                <div
+                  className="flex-row gap-6px pointer"
+                  onClick={() => {
+                    setNewMemberInputOpen(true);
+                  }}
+                >
+                  <AddIcon />
+                  <div className="medium">멤버 추가</div>
+                </div>
+              )}
+            </div>
+          )}
+          <Button variant="contained" onClick={() => handleCreateBook()}>
+            가계부 만들기
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };
