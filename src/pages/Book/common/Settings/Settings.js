@@ -193,7 +193,7 @@ export const Settings = ({}) => {
     memberPutMutation.mutate([
       {
         action: 'add',
-        email: newMemberEmail,
+        memberEmail: newMemberEmail,
         role: 'editor',
       },
     ]);
