@@ -1,17 +1,21 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { Link } from 'react-router-dom';
-import { Panel } from '../../../../components/Panel/Panel';
-import { Table } from '../../../../components/Table/Table';
+import { Button } from '../../../../components/Button/Button'; // Modal 버튼
 import { FAB } from '../../../../components/FAB/FAB'; // FAB 추가
 import { Modal } from '../../../../components/Modal/Modal'; // Modal 추가
+import { Panel } from '../../../../components/Panel/Panel';
+import { Radio } from '../../../../components/Radio/Radio'; // Modal 내부 라디오 버튼
+import { Table } from '../../../../components/Table/Table';
 import { TextboxLabel } from '../../../../components/Text/Text'; // Modal 내부 텍스트
 import { Textbox } from '../../../../components/Textbox/Textbox'; // Modal 내부 텍스트박스
-import { Radio } from '../../../../components/Radio/Radio'; // Modal 내부 라디오 버튼
-import { Button } from '../../../../components/Button/Button'; // Modal 버튼
 import { authState } from '../../../../store/Auth';
 
 export const TableView = () => {
@@ -30,7 +34,7 @@ export const TableView = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const { bookUuid } = useParams();
-  
+
   // 추가된 상태 변수들
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기/닫기 상태
   const [selectedRadio, setSelectedRadio] = useState('expense'); // 라디오 버튼 선택 상태
@@ -106,10 +110,9 @@ export const TableView = () => {
     setPaymentMethodsFiltered(paymentMethods.filter((elem) => !elem.isDeleted));
   }, [paymentMethods]);
 
-  const monthlyTransactionsPost = async (body) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/month`,
-      body,
+  const monthlyTransactionsPost = async ({ year, month }) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/month?year=${year}&month=${month}`,
       config
     );
     return response.data;
@@ -235,7 +238,7 @@ export const TableView = () => {
       </Panel>
 
       {/* FAB 버튼 추가 */}
-      <FAB onClick={() => setIsModalOpen(!isModalOpen)} /> 
+      <FAB onClick={() => setIsModalOpen(!isModalOpen)} />
 
       {/* 모달 */}
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} title="새 기록">

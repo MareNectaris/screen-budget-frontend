@@ -91,10 +91,9 @@ export const TimelineAndCalendar = () => {
     //setModifyPaymentMethodId(selected.paymentMethodId);
     setIsScheduleModalOpen(true);
   };
-  const perMonthPost = async (yearAndMonth) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/month`,
-      yearAndMonth,
+  const perMonthPost = async ({ year, month }) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/month?year=${year}&month=${month}`,
       config
     );
     return response.data;
@@ -113,10 +112,9 @@ export const TimelineAndCalendar = () => {
       alert(error);
     },
   });
-  const perDatePost = async (dateYYYYMMDD) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/date`,
-      dateYYYYMMDD,
+  const perDatePost = async ({ date }) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_ADDRESS}/api/transactions/${bookUuid}/date?date=${date}`,
       config
     );
     return response.data;
@@ -235,7 +233,7 @@ export const TimelineAndCalendar = () => {
   }, [bookName]);
   useEffect(() => {
     perDateMutation.mutate({
-      date: getKSTDate(new Date()),
+      date: getKSTDateString(new Date()),
     });
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     setMinorCategory('캘린더 및 타임라인');
