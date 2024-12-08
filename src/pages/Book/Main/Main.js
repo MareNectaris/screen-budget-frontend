@@ -42,14 +42,14 @@ export const Main = () => {
   });
 
   //FOR PRODUCTION
-  // useEffect(() => {
-  //   mutation.mutate({});
-  // }, []);
-
-  //TEMP FOR DEBUG ONLY
   useEffect(() => {
-    navigate('/books/6751682c5102af593dc9902d');
+    mutation.mutate({});
   }, []);
+
+  // //TEMP FOR DEBUG ONLY
+  // useEffect(() => {
+  //   navigate('/books/6751682c5102af593dc9902d');
+  // }, []);
 
   return <div className="App"></div>;
 };
