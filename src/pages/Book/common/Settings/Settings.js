@@ -361,15 +361,6 @@ export const Settings = ({}) => {
       alert(error);
     },
   });
-
-  useEffect(() => {
-    mutation.mutate();
-    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
-    paymentMethodGetMutation.mutate();
-    memberInfoGetMutation.mutate();
-    profileGetMutation.mutate();
-  }, []);
-
   useEffect(() => {
     mutation.mutate();
     paymentMethodGetMutation.mutate();

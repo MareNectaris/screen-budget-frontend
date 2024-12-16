@@ -224,10 +224,7 @@ export const Dashboard = () => {
     setMajorCategory(bookName);
   }, [bookName]);
   useEffect(() => {
-    mutation.mutate({});
-    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     setMinorCategory('대시보드');
-    spendingsGetMutation.mutate();
   }, []);
 
   useEffect(() => {

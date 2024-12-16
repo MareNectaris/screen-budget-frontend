@@ -134,18 +134,11 @@ export const FinanceSchedule = () => {
   };
 
   useEffect(() => {
-    // schedules 배열을 리셋하는 로직 추가
-    setSchedules([]);
-    schedulesGetMutation.mutate();
-    paymentMutation.mutate();
-  }, []);
-
-
-  useEffect(() => {
     setMajorCategory(bookName);
   }, [bookName]);
   useEffect(() => {
-    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
+    // schedules 배열을 리셋하는 로직 추가
+    setSchedules([]);
     setMinorCategory('금융 일정');
     schedulesGetMutation.mutate();
     paymentMutation.mutate();
@@ -153,21 +146,21 @@ export const FinanceSchedule = () => {
   useEffect(() => {
     // schedules 배열이 변경될 때마다 중복된 데이터를 처리하도록 변경
     let arr3d = Array.from({ length: 31 }, () => []);
-    
+
     // 중복된 항목이 추가되지 않도록 처리
     schedules.forEach((schedule) => {
       const existingSchedule = arr3d[schedule.dateInfo.day - 1].find(
         (item) => item._id === schedule._id
       );
-      
+
       if (!existingSchedule) {
         arr3d[schedule.dateInfo.day - 1].push(schedule);
       }
     });
-    
+
     setScheduleArrPerDay(arr3d);
   }, [schedules]);
-  
+
   useEffect(() => {
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
   }, [books]);
@@ -181,39 +174,41 @@ export const FinanceSchedule = () => {
           <Title>금융 일정</Title>
           <div className="flex-col">
             {scheduleArrPerDay.map((day, index) => {
-  if (day.length > 0) {
-    return (
-      <div className="flex-row gap-6px" key={day[0]._id}> {/* 고유한 _id 사용 */}
-        <div
-          className="text-20px medium"
-          style={{ minWidth: '50px', textAlign: 'end' }}
-        >
-          {day[0].dateInfo.day}일
-        </div>
-        <div className="flex-col flex-1">
-          {day.map((elem) => {
-            return (
-              <ScheduleIndividual
-                key={elem._id} // 고유한 _id 값 사용
-                paymentLocation={elem.name}
-                category={elem.category.name}
-                color={elem.category.color}
-                paymentMethod={
-                  paymentMethods?.find(
-                    (o) => o._id === elem.paymentMethodId
-                  )?.name
-                }
-                transactionType="expense"
-                amount={elem.amount}
-                _id={elem._id}
-              />
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-})}
+              if (day.length > 0) {
+                return (
+                  <div className="flex-row gap-6px" key={day[0]._id}>
+                    {' '}
+                    {/* 고유한 _id 사용 */}
+                    <div
+                      className="text-20px medium"
+                      style={{ minWidth: '50px', textAlign: 'end' }}
+                    >
+                      {day[0].dateInfo.day}일
+                    </div>
+                    <div className="flex-col flex-1">
+                      {day.map((elem) => {
+                        return (
+                          <ScheduleIndividual
+                            key={elem._id} // 고유한 _id 값 사용
+                            paymentLocation={elem.name}
+                            category={elem.category.name}
+                            color={elem.category.color}
+                            paymentMethod={
+                              paymentMethods?.find(
+                                (o) => o._id === elem.paymentMethodId
+                              )?.name
+                            }
+                            transactionType="expense"
+                            amount={elem.amount}
+                            _id={elem._id}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }
+            })}
           </div>{' '}
           <div
             className="flex-row gap-6px pointer"

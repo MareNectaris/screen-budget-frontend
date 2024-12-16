@@ -135,18 +135,8 @@ export const TableView = () => {
   }, [bookName]);
 
   useEffect(() => {
-    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     setMinorCategory('테이블');
-    monthlyTransactionsPostMutation.mutate({
-      year: selectedMonth.getFullYear(),
-      month: selectedMonth.getMonth() + 1,
-    });
-    idMutation.mutate();
   }, []);
-
-  useEffect(() => {
-    console.log(selectedMonth);
-  }, [selectedMonth]);
 
   useEffect(() => {
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);

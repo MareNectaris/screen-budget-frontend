@@ -182,9 +182,6 @@ export const Stats = () => {
   useEffect(() => {
     setBookName(books.find((elem) => elem._id == bookUuid)?.name);
   }, [books]);
-  useEffect(() => {
-    console.log(spendings);
-  }, [spendings]);
   return (
     <div
       style={{

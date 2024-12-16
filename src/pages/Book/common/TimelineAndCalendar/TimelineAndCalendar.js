@@ -235,7 +235,6 @@ export const TimelineAndCalendar = () => {
     perDateMutation.mutate({
       date: getKSTDateString(new Date()),
     });
-    setBookName(books.find((elem) => elem._id == bookUuid)?.name);
     setMinorCategory('캘린더 및 타임라인');
   }, []);
   useEffect(() => {

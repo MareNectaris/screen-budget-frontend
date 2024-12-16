@@ -118,16 +118,12 @@ export const BooksBase = () => {
   });
 
   useEffect(() => {
-    mutation.mutate();
     profileGetMutation.mutate();
   }, []);
 
   useEffect(() => {
     mutation.mutate();
   }, [bookUuid]);
-  useEffect(() => {
-    console.log(books);
-  }, [books]);
   return (
     <div className="App">
       {isSidebarOpen && (
